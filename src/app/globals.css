@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-brand-dark: #49146D;
+  --color-brand-purple: #55356D;
+  --color-cta: #AC6899;
+  --color-cta-hover: #985B88;
+  --color-cta-active: #844E77;
+  --color-neutral-text: #2D2D2D;
+  --color-neutral-muted: #757575;
+  --color-neutral-border: #E5E7EB;
+  --color-neutral-soft: #D1D5DB;
+  --color-surface: #FFFFFF;
+  --color-surface-section: #FDFBFF;
+  --color-status-success: #10B981;
+  --color-status-error: #EF4444;
+
+  --font-family-sans: Arial, Helvetica, sans-serif;
+
+  --shadow-card: 0 4px 6px -1px rgba(73, 20, 109, 0.05), 0 2px 4px -1px rgba(73, 20, 109, 0.03);
+  --shadow-premium: 0 10px 15px -3px rgba(73, 20, 109, 0.1), 0 4px 6px -2px rgba(73, 20, 109, 0.05);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 15px;
+    color: var(--color-neutral-text);
+    background-color: var(--color-surface);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+    color: var(--color-brand-dark);
+  }
+
+  input, button, select, textarea {
+    font-family: inherit;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .btn-cta {
+    @apply w-full h-[48px] bg-cta text-white text-[15px] font-bold
+           rounded-[6px] border-none cursor-pointer transition-all duration-200
+           hover:bg-cta-hover hover:shadow-lg active:scale-[0.98]
+           focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-cta/30 focus-visible:ring-offset-1
+           disabled:bg-neutral-soft disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply w-full h-[48px] bg-transparent text-neutral-text text-[14px] font-medium
+           rounded-[6px] border border-neutral-border cursor-pointer transition-all duration-200
+           hover:bg-surface-section hover:border-neutral-border active:bg-neutral-border
+           focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-cta/30 focus-visible:ring-offset-1
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .input-base {
+    @apply w-full border border-neutral-border rounded-[6px]
+           px-4 py-3 text-sm text-neutral-text placeholder:text-neutral-muted
+           transition-all duration-200
+           focus:outline-none focus:border-cta focus:ring-4 focus:ring-cta/10;
+  }
+
+  .card-base {
+    @apply bg-surface border border-neutral-border rounded-[8px]
+           p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_4px_-1px_rgba(0,0,0,0.03)]
+           hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.08),0_4px_6px_-2px_rgba(0,0,0,0.04)] 
+           transition-all duration-300;
+  }
+
+  .card-accent {
+    @apply bg-surface border border-neutral-border rounded-[10px]
+           p-6 shadow-card
+           relative overflow-hidden transition-all duration-300
+           hover:shadow-premium hover:-translate-y-0.5;
+  }
+
+  .card-accent::before {
+    content: '';
+    @apply absolute top-0 left-0 w-[5px] h-full;
+    background: linear-gradient(to bottom, #55356D, #AC6899);
+  }
+
+  .badge-success { @apply bg-status-success/10 text-status-success border border-status-success/20; }
+  .badge-error   { @apply bg-status-error/10 text-status-error border border-status-error/20; }
 }
