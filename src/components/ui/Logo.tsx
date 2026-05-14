@@ -9,6 +9,7 @@ interface LogoProps {
   height?: number
   showText?: boolean
   light?: boolean
+  filter?: boolean
 }
 
 export default function Logo({ 
@@ -16,7 +17,8 @@ export default function Logo({
   width = 120, 
   height = 40, 
   showText = true,
-  light = false 
+  light = false,
+  filter = false
 }: LogoProps) {
   return (
     <Link href="/" className={`flex items-center gap-2 transition-opacity hover:opacity-90 ${className}`}>
@@ -29,7 +31,7 @@ export default function Logo({
           alt="Tram Pay Logo"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className={`object-contain ${light ? 'brightness-0 invert' : ''}`}
+          className={`object-contain ${filter ? 'brightness-0 invert' : ''}`}
           priority
         />
       </div>

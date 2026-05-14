@@ -58,24 +58,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen flex">
       {/* Sidebar desktop */}
-      <aside className="hidden md:flex flex-col w-[240px] bg-brand-dark fixed top-0 left-0 h-full z-20">
+      <aside className="hidden md:flex flex-col w-[240px] bg-[#55356D] fixed top-0 left-0 h-full z-20">
         <div className="px-6 py-5 border-b border-white/10">
-          <Logo light width={100} height={30} showText={true} />
+          <Logo light={true} width={100} height={30} showText={true} />
         </div>
 
         <nav className="flex-1 flex flex-col mt-2">{navItems}</nav>
 
         {fullName && (
           <div className="px-6 py-4 border-t border-white/10">
-            <p className="text-[12px] text-neutral-muted truncate">{fullName}</p>
+            <p className="text-[12px] text-white/70 truncate">{fullName}</p>
           </div>
         )}
       </aside>
 
       {/* Header mobile */}
-      <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-brand-dark flex items-center justify-between px-4 z-20">
+      <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-[#55356D] flex items-center justify-between px-4 z-20">
         <div className="flex items-center gap-2">
-          <Logo light width={100} height={28} showText={true} />
+          <Logo light={true} width={100} height={28} showText={true} />
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-10 bg-black/50" onClick={() => setMobileOpen(false)}>
           <aside
-            className="absolute top-14 left-0 w-[240px] h-[calc(100%-56px)] bg-brand-dark flex flex-col"
+            className="absolute top-14 left-0 w-[240px] h-[calc(100%-56px)] bg-[#55356D] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="flex-1 flex flex-col mt-2">{navItems}</nav>
