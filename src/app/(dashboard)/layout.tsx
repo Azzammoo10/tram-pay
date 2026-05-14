@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react'
+import { LayoutDashboard, LogOut, Menu, X, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/ui/Logo'
 
@@ -42,6 +42,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       >
         <LayoutDashboard size={18} />
         Dashboard
+      </Link>
+      <Link
+        href="/profile"
+        className="flex items-center gap-3 px-6 py-4 text-[14px] text-white
+                   hover:bg-white/10 hover:border-l-[3px] hover:border-cta hover:pl-[21px]
+                   transition-all duration-150"
+        onClick={() => setMobileOpen(false)}
+      >
+        <User size={18} />
+        Profil
       </Link>
       <button
         onClick={handleSignOut}
