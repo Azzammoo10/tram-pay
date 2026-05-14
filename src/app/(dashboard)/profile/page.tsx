@@ -104,61 +104,59 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="max-w-[1000px] mx-auto space-y-8 pb-12">
-      {/* Header / Hero Section */}
-      <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-brand-dark to-brand-purple p-8 text-white shadow-xl">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-cta/10 rounded-full -ml-32 -mb-32 blur-3xl" />
-        
-        <div className="relative flex flex-col md:flex-row items-center gap-8">
-          <div className="w-24 h-24 rounded-2xl bg-white/10 flex items-center justify-center text-[32px] font-bold border border-white/20 backdrop-blur-md shadow-inner">
-            {profile?.full_name ? getInitials(profile.full_name) : <User size={40} />}
+    <div className="max-w-4xl mx-auto py-8 px-4 space-y-8">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-[28px] md:text-[32px] font-bold text-brand-dark">Mon Profil</h1>
+          <p className="text-[14px] text-neutral-muted mt-1">Gérez vos informations personnelles et votre compte</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Badge variant="success" className="bg-white/10 border-neutral-border text-cta font-bold">
+            Compte Vérifié
+          </Badge>
+        </div>
+      </header>
+
+      {/* Profile Card / Hero */}
+      <div className="card-accent overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-cta/5 rounded-full -mr-32 -mt-32 blur-3xl" />
+        <div className="relative flex flex-col md:flex-row items-center gap-6 p-6 md:p-8">
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-brand-dark flex items-center justify-center text-[28px] md:text-[32px] font-bold text-white shadow-lg">
+            {profile?.full_name ? getInitials(profile.full_name) : <User size={36} />}
           </div>
           
-          <div className="text-center md:text-left flex-1">
-            <h1 className="text-[32px] font-bold leading-tight text-white">
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-[22px] md:text-[26px] font-bold text-brand-dark leading-tight">
               {profile?.full_name || 'Utilisateur Tram Pay'}
-            </h1>
-            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-2 text-white text-[14px]">
-              <span className="flex items-center gap-1.5 opacity-90">
-                <Mail size={14} /> {userEmail}
+            </h2>
+            <div className="flex flex-col md:flex-row flex-wrap justify-center md:justify-start gap-2 md:gap-4 mt-2 text-neutral-muted text-[13px] md:text-[14px]">
+              <span className="flex items-center justify-center md:justify-start gap-1.5">
+                <Mail size={14} className="text-cta" /> {userEmail}
               </span>
-              <span className="flex items-center gap-1.5 opacity-90">
-                <Phone size={14} /> {profile?.phone || 'Non renseigné'}
-              </span>
-              <span className="flex items-center gap-1.5 text-cta-light font-bold">
-                <Badge variant="success" className="bg-white/10 border-white/20 text-white">
-                  Compte Vérifié
-                </Badge>
+              <span className="flex items-center justify-center md:justify-start gap-1.5">
+                <Phone size={14} className="text-cta" /> {profile?.phone || 'Non renseigné'}
               </span>
             </div>
           </div>
 
           <div className="flex gap-4">
-            <div className="text-center px-6 py-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-              <div className="text-[20px] font-bold">{stats.totalTrips}</div>
-              <div className="text-[10px] uppercase tracking-wider text-white/50">Trajets</div>
+            <div className="text-center px-6 py-3 rounded-xl bg-surface-section border border-neutral-border shadow-sm">
+              <div className="text-[20px] font-bold text-brand-dark">{stats.totalTrips}</div>
+              <div className="text-[10px] uppercase tracking-wider text-neutral-muted font-bold">Trajets</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-5 gap-8">
         {/* Left: Forms & Settings */}
-        <div className="lg:col-span-2 space-y-8">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="card-accent"
-          >
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-cta/10 rounded-lg text-cta">
-                  <User size={20} />
-                </div>
-                <h2 className="text-[18px] font-bold text-brand-dark">Profil Public</h2>
+        <div className="lg:col-span-3 space-y-8">
+          <div className="card-base">
+            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-neutral-border">
+              <div className="p-2 bg-brand-dark/5 text-brand-dark rounded-lg">
+                <User size={20} />
               </div>
+              <h3 className="text-[18px] font-bold text-brand-dark">Profil Public</h3>
             </div>
 
             <form onSubmit={handleUpdateProfile} className="space-y-6">
@@ -196,14 +194,14 @@ export default function ProfilePage() {
                 <Button 
                   type="submit" 
                   loading={saving} 
-                  className="w-full md:w-auto px-10 py-4 h-auto bg-brand-dark hover:bg-brand-purple shadow-lg hover:shadow-brand-purple/20 transition-all duration-300 group"
+                  className="w-full md:w-auto px-6 md:px-10 py-4 h-auto bg-brand-dark hover:bg-brand-purple shadow-lg hover:shadow-brand-purple/20 transition-all duration-300 group"
                 >
                   <Save size={18} className="group-hover:scale-110 transition-transform" />
                   Sauvegarder les modifications
                 </Button>
               </div>
             </form>
-          </motion.div>
+          </div>
 
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -276,7 +274,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="space-y-1">
                       <div className="text-[10px] opacity-60 uppercase tracking-widest">ID Unique</div>
-                      <div className="text-[16px] font-mono font-bold tracking-wider truncate">
+                      <div className="text-[13px] md:text-[16px] font-mono font-bold tracking-wider break-all">
                         {card.card_token.match(/.{1,4}/g)?.join(' ') || card.card_token}
                       </div>
                     </div>
