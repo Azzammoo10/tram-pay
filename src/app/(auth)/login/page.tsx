@@ -42,7 +42,11 @@ function LoginForm() {
       password: data.password,
     })
     if (error) {
-      setServerError('Email ou mot de passe incorrect.')
+      if (error.message?.toLowerCase().includes('confirm') || error.message?.toLowerCase().includes('verified') || error.message?.toLowerCase().includes('verification')) {
+        setServerError('Veuillez confirmer votre adresse e-mail. Un lien a été envoyé à votre adresse.')
+      } else {
+        setServerError('Email ou mot de passe incorrect.')
+      }
       return
     }
     router.push('/dashboard')
@@ -50,21 +54,31 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-section flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-[400px]">
-        <div className="card-accent">
-          <Logo className="mb-8" showText={false} width={120} height={40} />
+    <div className="min-h-screen bg-surface-section flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Ambient background glow matching Rabat-Salé style */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-purple/5 rounded-full -mr-64 -mt-64 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cta/5 rounded-full -ml-48 -mb-48 blur-3xl pointer-events-none" />
 
-          <h1 className="text-[28px] font-bold text-brand-dark leading-tight mb-1">
-            Connexion
-          </h1>
-          <p className="text-[14px] text-neutral-muted mb-8">
-            Accédez à vos titres de transport
-          </p>
+      <div className="w-full max-w-[400px] z-10">
+        <div className="card-accent bg-white p-8">
+          <div className="flex flex-col items-center mb-6">
+            <Logo className="mb-4" showText={true} width={130} height={42} />
+            <div className="h-[1px] w-12 bg-neutral-border my-2" />
+          </div>
+
+          <div className="text-center mb-8">
+            <h1 className="text-[20px] font-bold text-brand-dark leading-tight mb-2">
+              Espace Voyageur
+            </h1>
+            <p className="text-[13px] text-neutral-muted leading-relaxed max-w-[280px] mx-auto">
+              Connectez-vous pour accéder à vos cartes de transport et tickets virtuels.
+            </p>
+          </div>
 
           {registered && (
-            <div className="mb-6 p-3 bg-status-success/10 border border-status-success/20 rounded-[3px]">
-              <p className="text-[13px] text-status-success font-medium">
+            <div className="mb-6 p-4 bg-[#10B981]/5 border border-[#10B981]/15 rounded-[3px] flex items-start gap-2.5">
+              <span className="text-[14px] text-[#10B981] font-bold">✓</span>
+              <p className="text-[12.5px] text-[#0f2e1a] font-medium leading-normal">
                 Compte créé avec succès ! Vous pouvez maintenant vous connecter.
               </p>
             </div>
@@ -72,9 +86,9 @@ function LoginForm() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
             <Input
-              label="Email"
+              label="Adresse Email"
               type="email"
-              placeholder="vous@exemple.com"
+              placeholder="nom@exemple.com"
               autoComplete="email"
               error={errors.email?.message}
               {...register('email')}
@@ -90,17 +104,19 @@ function LoginForm() {
             />
 
             {serverError && (
-              <p className="text-[12px] text-status-error">{serverError}</p>
+              <div className="p-3 bg-status-error/5 border border-status-error/15 rounded-[3px] text-center">
+                <p className="text-[12px] text-status-error font-medium">{serverError}</p>
+              </div>
             )}
 
-            <Button type="submit" loading={isSubmitting} className="mt-2">
+            <Button type="submit" loading={isSubmitting} className="mt-3">
               Se connecter
             </Button>
           </form>
 
-          <p className="text-center text-[14px] text-neutral-muted mt-6">
-            Pas encore de compte ?{' '}
-            <Link href="/register" className="text-cta hover:underline">
+          <p className="text-center text-[13px] text-neutral-muted mt-8 pt-6 border-t border-neutral-border/50">
+            Nouveau sur le réseau ?{' '}
+            <Link href="/register" className="text-cta hover:underline font-bold">
               Créer un compte
             </Link>
           </p>

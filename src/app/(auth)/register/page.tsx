@@ -62,19 +62,29 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-section flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-[400px]">
-        <div className="card-accent">
-          <Logo className="mb-8" showText={false} width={120} height={40} />
+    <div className="min-h-screen bg-surface-section flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Ambient background glow matching Rabat-Salé style */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-purple/5 rounded-full -mr-64 -mt-64 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cta/5 rounded-full -ml-48 -mb-48 blur-3xl pointer-events-none" />
 
-          <h1 className="text-[28px] font-bold text-brand-dark leading-tight mb-1">
-            Créer un compte
-          </h1>
-          <p className="text-[14px] text-neutral-muted mb-8">
-            Rejoignez le réseau Tramway Rabat-Salé
-          </p>
+      <div className="w-full max-w-[400px] z-10">
+        <div className="card-accent bg-white p-8">
+          <div className="flex flex-col items-center mb-6">
+            <Logo className="mb-4" showText={true} width={130} height={42} />
+            <div className="h-[1px] w-12 bg-neutral-border my-2" />
+          </div>
+
+          <div className="text-center mb-8">
+            <h1 className="text-[20px] font-bold text-brand-dark leading-tight mb-2">
+              Créer un Compte
+            </h1>
+            <p className="text-[13px] text-neutral-muted leading-relaxed max-w-[280px] mx-auto">
+              Inscrivez-vous pour obtenir votre carte de transport virtuelle Rabat-Salé.
+            </p>
+          </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
+            
             <Input
               label="Nom complet"
               type="text"
@@ -85,9 +95,9 @@ export default function RegisterPage() {
             />
 
             <Input
-              label="Email"
+              label="Adresse Email"
               type="email"
-              placeholder="vous@exemple.com"
+              placeholder="nom@exemple.com"
               autoComplete="email"
               error={errors.email?.message}
               {...register('email')}
@@ -96,7 +106,7 @@ export default function RegisterPage() {
             <Input
               label="Mot de passe"
               type="password"
-              placeholder="••••••••"
+              placeholder="•••••••• (8 caract. min)"
               autoComplete="new-password"
               error={errors.password?.message}
               {...register('password')}
@@ -112,17 +122,19 @@ export default function RegisterPage() {
             />
 
             {serverError && (
-              <p className="text-[12px] text-status-error">{serverError}</p>
+              <div className="p-3 bg-status-error/5 border border-status-error/15 rounded-[3px] text-center">
+                <p className="text-[12px] text-status-error font-medium">{serverError}</p>
+              </div>
             )}
 
-            <Button type="submit" loading={isSubmitting} className="mt-2">
+            <Button type="submit" loading={isSubmitting} className="mt-3">
               Créer mon compte
             </Button>
           </form>
 
-          <p className="text-center text-[14px] text-neutral-muted mt-6">
-            Déjà un compte ?{' '}
-            <Link href="/login" className="text-cta hover:underline">
+          <p className="text-center text-[13px] text-neutral-muted mt-8 pt-6 border-t border-neutral-border/50">
+            Déjà inscrit ?{' '}
+            <Link href="/login" className="text-cta hover:underline font-bold">
               Se connecter
             </Link>
           </p>

@@ -11,9 +11,14 @@ function fromBase64Url(str: string): string {
   return str.replace(/-/g, '+').replace(/_/g, '/')
 }
 
-export function generateQRPayload(ticketId: number, userId: string, expiresAt: string): string {
-  const nonce = randomBytes(8).toString('hex')
-  const data = JSON.stringify({ ticketId, userId, expiresAt, nonce })
+export function generateQRPayload(
+  transactionId: string,
+  userId: string,
+  amount: number,
+  expiresAt: string,
+  issuedAt: string
+): string {
+  const data = JSON.stringify({ transactionId, userId, amount, expiresAt, issuedAt })
   const sig = createHmac('sha256', SECRET).update(data).digest('hex')
   const raw = JSON.stringify({ data, sig })
   return toBase64Url(Buffer.from(raw))
@@ -21,7 +26,11 @@ export function generateQRPayload(ticketId: number, userId: string, expiresAt: s
 
 export function verifyQRPayload(payload: string): {
   valid: boolean
-  ticketId?: number
+  transactionId?: string
+  userId?: string
+  amount?: number
+  expiresAt?: string
+  issuedAt?: string
   reason?: string
 } {
   try {
@@ -32,16 +41,26 @@ export function verifyQRPayload(payload: string): {
     const sigMatch = timingSafeEqual(Buffer.from(sig, 'hex'), Buffer.from(expectedSig, 'hex'))
     if (!sigMatch) return { valid: false, reason: 'invalid_signature' }
 
-    const { ticketId, expiresAt } = JSON.parse(data) as {
-      ticketId: number
+    const parsed = JSON.parse(data) as {
+      transactionId: string
       userId: string
+      amount: number
       expiresAt: string
-      nonce: string
+      issuedAt: string
     }
 
-    if (new Date(expiresAt) < new Date()) return { valid: false, reason: 'expired' }
+    if (new Date(parsed.expiresAt) < new Date()) {
+      return { valid: false, reason: 'expired' }
+    }
 
-    return { valid: true, ticketId }
+    return {
+      valid: true,
+      transactionId: parsed.transactionId,
+      userId: parsed.userId,
+      amount: parsed.amount,
+      expiresAt: parsed.expiresAt,
+      issuedAt: parsed.issuedAt,
+    }
   } catch {
     return { valid: false, reason: 'malformed' }
   }

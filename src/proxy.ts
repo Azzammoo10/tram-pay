@@ -29,13 +29,21 @@ export default async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  const path = request.nextUrl.pathname
+
+  // Protéger les routes privées (redirection vers /login si non connecté)
+  const privateRoutes = ['/dashboard', '/setup-profile']
+  if (!user && privateRoutes.some((r) => path.startsWith(r))) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (user && ['/login', '/register'].includes(request.nextUrl.pathname)) {
+  // Rediriger si déjà connecté et tente de visiter /login ou /register
+  if (user && ['/login', '/register'].includes(path)) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
+
+  // Note: la vérification de l'avatar (setup-profile) est gérée côté client
+  // dans (dashboard)/layout.tsx pour éviter les problèmes de JWT stale.
 
   return supabaseResponse
 }

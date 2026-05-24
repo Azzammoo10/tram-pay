@@ -107,11 +107,11 @@ export default function ProfilePage() {
     <div className="max-w-4xl mx-auto py-8 px-4 space-y-8">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-[28px] md:text-[32px] font-bold text-brand-dark">Mon Profil</h1>
+          <h1 className="text-[24px] font-bold text-brand-dark">Mon Profil</h1>
           <p className="text-[14px] text-neutral-muted mt-1">Gérez vos informations personnelles et votre compte</p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="success" className="bg-white/10 border-neutral-border text-cta font-bold">
+          <Badge variant="success" className="bg-[#10B981]/15 border border-[#10B981]/25 text-cta font-bold">
             Compte Vérifié
           </Badge>
         </div>
@@ -121,28 +121,28 @@ export default function ProfilePage() {
       <div className="card-accent overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-cta/5 rounded-full -mr-32 -mt-32 blur-3xl" />
         <div className="relative flex flex-col md:flex-row items-center gap-6 p-6 md:p-8">
-          <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-brand-dark flex items-center justify-center text-[28px] md:text-[32px] font-bold text-white shadow-lg">
-            {profile?.full_name ? getInitials(profile.full_name) : <User size={36} />}
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-[3px] bg-brand-dark flex items-center justify-center text-[24px] md:text-[28px] font-bold text-white shadow-card border border-white/10">
+            {profile?.full_name ? getInitials(profile.full_name) : <User size={30} />}
           </div>
           
           <div className="flex-1 text-center md:text-left">
-            <h2 className="text-[22px] md:text-[26px] font-bold text-brand-dark leading-tight">
+            <h2 className="text-[20px] font-bold text-brand-dark leading-tight">
               {profile?.full_name || 'Utilisateur Tram Pay'}
             </h2>
-            <div className="flex flex-col md:flex-row flex-wrap justify-center md:justify-start gap-2 md:gap-4 mt-2 text-neutral-muted text-[13px] md:text-[14px]">
+            <div className="flex flex-col md:flex-row flex-wrap justify-center md:justify-start gap-2 md:gap-4 mt-2 text-neutral-muted text-[13px]">
               <span className="flex items-center justify-center md:justify-start gap-1.5">
-                <Mail size={14} className="text-cta" /> {userEmail}
+                <Mail size={13} className="text-cta" /> {userEmail}
               </span>
               <span className="flex items-center justify-center md:justify-start gap-1.5">
-                <Phone size={14} className="text-cta" /> {profile?.phone || 'Non renseigné'}
+                <Phone size={13} className="text-cta" /> {profile?.phone || 'Non renseigné'}
               </span>
             </div>
           </div>
 
           <div className="flex gap-4">
-            <div className="text-center px-6 py-3 rounded-xl bg-surface-section border border-neutral-border shadow-sm">
-              <div className="text-[20px] font-bold text-brand-dark">{stats.totalTrips}</div>
-              <div className="text-[10px] uppercase tracking-wider text-neutral-muted font-bold">Trajets</div>
+            <div className="text-center px-5 py-2.5 rounded-[3px] bg-surface-section border border-neutral-border shadow-card">
+              <div className="text-[18px] font-bold text-brand-dark">{stats.totalTrips}</div>
+              <div className="text-[9px] uppercase tracking-wider text-neutral-muted font-bold">Trajets</div>
             </div>
           </div>
         </div>
@@ -152,28 +152,28 @@ export default function ProfilePage() {
         {/* Left: Forms & Settings */}
         <div className="lg:col-span-3 space-y-8">
           <div className="card-base">
-            <div className="flex items-center gap-3 mb-8 pb-4 border-b border-neutral-border">
-              <div className="p-2 bg-brand-dark/5 text-brand-dark rounded-lg">
-                <User size={20} />
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-border">
+              <div className="p-2 bg-brand-dark/5 text-brand-dark rounded-[3px]">
+                <User size={18} />
               </div>
-              <h3 className="text-[18px] font-bold text-brand-dark">Profil Public</h3>
+              <h3 className="text-[16px] font-bold text-brand-dark">Profil Public</h3>
             </div>
 
-            <form onSubmit={handleUpdateProfile} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+            <form onSubmit={handleUpdateProfile} className="space-y-5">
+              <div className="grid md:grid-cols-2 gap-5">
                 <Input
                   label="Nom complet"
                   value={profile?.full_name || ''}
                   onChange={(e) => setProfile(prev => prev ? { ...prev, full_name: e.target.value } : null)}
                   placeholder="Ex: Mohamed Azzam"
-                  icon={<User size={16} />}
+                  icon={<User size={14} />}
                 />
                 <Input
                   label="Numéro de téléphone"
                   value={profile?.phone || ''}
                   onChange={(e) => setProfile(prev => prev ? { ...prev, phone: e.target.value } : null)}
                   placeholder="Ex: 0612345678"
-                  icon={<Phone size={16} />}
+                  icon={<Phone size={14} />}
                 />
               </div>
 
@@ -181,8 +181,10 @@ export default function ProfilePage() {
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className={`p-4 rounded-[12px] text-[13px] font-medium flex items-center gap-3 ${
-                    message.type === 'success' ? 'bg-status-success/10 text-status-success border border-status-success/20' : 'bg-status-error/10 text-status-error border border-status-error/20'
+                  className={`p-4 rounded-[3px] text-[13px] font-medium flex items-center gap-3 ${
+                    message.type === 'success' 
+                      ? 'bg-status-success/10 text-status-success border border-status-success/20' 
+                      : 'bg-status-error/10 text-status-error border border-status-error/20'
                   }`}
                 >
                   <div className={`w-1.5 h-1.5 rounded-full ${message.type === 'success' ? 'bg-status-success' : 'bg-status-error'}`} />
@@ -194,9 +196,9 @@ export default function ProfilePage() {
                 <Button 
                   type="submit" 
                   loading={saving} 
-                  className="w-full md:w-auto px-6 md:px-10 py-4 h-auto bg-brand-dark hover:bg-brand-purple shadow-lg hover:shadow-brand-purple/20 transition-all duration-300 group"
+                  className="w-full md:w-auto px-8 flex items-center justify-center gap-2 h-[45px] text-[14px]"
                 >
-                  <Save size={18} className="group-hover:scale-110 transition-transform" />
+                  <Save size={16} />
                   Sauvegarder les modifications
                 </Button>
               </div>
@@ -210,16 +212,16 @@ export default function ProfilePage() {
             className="card-base"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-brand-dark/5 rounded-lg text-brand-dark">
-                <Shield size={20} />
+              <div className="p-2 bg-brand-dark/5 rounded-[3px] text-brand-dark">
+                <Shield size={18} />
               </div>
-              <h2 className="text-[18px] font-bold text-brand-dark">Confidentialité & Sécurité</h2>
+              <h2 className="text-[16px] font-bold text-brand-dark">Confidentialité & Sécurité</h2>
             </div>
             
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-xl border border-neutral-border hover:border-cta/30 transition-colors cursor-pointer group">
+              <div className="flex items-center justify-between p-4 rounded-[3px] border border-neutral-border hover:border-cta/30 transition-all cursor-pointer group bg-white shadow-card">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-neutral-soft flex items-center justify-center text-neutral-muted">
+                  <div className="w-10 h-10 rounded-[3px] bg-surface-section border border-neutral-border flex items-center justify-center text-brand-purple">
                     <Mail size={18} />
                   </div>
                   <div>
@@ -227,12 +229,12 @@ export default function ProfilePage() {
                     <p className="text-[12px] text-neutral-muted">{userEmail}</p>
                   </div>
                 </div>
-                <ChevronRight size={18} className="text-neutral-muted group-hover:text-cta transition-transform group-hover:translate-x-1" />
+                <ChevronRight size={18} className="text-neutral-muted group-hover:text-cta transition-transform duration-200" />
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-xl border border-neutral-border hover:border-cta/30 transition-colors cursor-pointer group">
+              <div className="flex items-center justify-between p-4 rounded-[3px] border border-neutral-border hover:border-cta/30 transition-all cursor-pointer group bg-white shadow-card">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-neutral-soft flex items-center justify-center text-neutral-muted">
+                  <div className="w-10 h-10 rounded-[3px] bg-surface-section border border-neutral-border flex items-center justify-center text-brand-purple">
                     <Shield size={18} />
                   </div>
                   <div>
@@ -240,14 +242,14 @@ export default function ProfilePage() {
                     <p className="text-[12px] text-neutral-muted">Dernière modification il y a 3 mois</p>
                   </div>
                 </div>
-                <ChevronRight size={18} className="text-neutral-muted group-hover:text-cta transition-transform group-hover:translate-x-1" />
+                <ChevronRight size={18} className="text-neutral-muted group-hover:text-cta transition-transform duration-200" />
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* Right: Card & Help */}
-        <div className="space-y-8">
+        <div className="lg:col-span-2 space-y-8">
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -255,51 +257,51 @@ export default function ProfilePage() {
             className="card-base border-t-[4px] border-t-brand-purple"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-brand-purple/10 rounded-lg text-brand-purple">
-                <CreditCard size={20} />
+              <div className="p-2 bg-brand-purple/10 rounded-[3px] text-brand-purple">
+                <CreditCard size={18} />
               </div>
-              <h2 className="text-[18px] font-bold text-brand-dark">Titre de Transport</h2>
+              <h2 className="text-[16px] font-bold text-brand-dark">Titre de Transport</h2>
             </div>
 
             {card ? (
               <div className="space-y-6">
-                <div className="relative aspect-[1.6/1] w-full rounded-2xl bg-gradient-to-br from-[#55356D] to-[#AC6899] p-6 text-white shadow-lg overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-40 transition-opacity">
+                <div className="relative aspect-[1.586/1] w-full rounded-[3px] bg-gradient-to-br from-[#1A0E03] to-[#55356D] p-6 text-white shadow-premium overflow-hidden group border border-[#AC6899]/20">
+                  <div className="absolute top-0 right-0 p-4 opacity-15 group-hover:opacity-30 transition-opacity">
                     <CreditCard size={100} />
                   </div>
                   <div className="h-full flex flex-col justify-between relative z-10">
                     <div className="flex justify-between items-start">
-                      <div className="text-[12px] font-medium tracking-widest uppercase opacity-70">Tramway Rabat-Salé</div>
-                      <Badge variant="success" className="bg-white/20 border-none text-white text-[10px]">ACTIF</Badge>
+                      <div className="text-[9px] font-bold tracking-widest uppercase text-[#AC6899]">Tramway Rabat-Salé</div>
+                      <Badge variant="success" className="bg-[#10B981]/15 border border-[#10B981]/25 text-white text-[9px] font-bold">ACTIF</Badge>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-[10px] opacity-60 uppercase tracking-widest">ID Unique</div>
-                      <div className="text-[13px] md:text-[16px] font-mono font-bold tracking-wider break-all">
+                      <div className="text-[9px] opacity-60 uppercase tracking-widest text-[#AC6899] font-bold">ID Unique</div>
+                      <div className="text-[13px] md:text-[15px] font-mono font-bold tracking-wider break-all text-white">
                         {card.card_token.match(/.{1,4}/g)?.join(' ') || card.card_token}
                       </div>
                     </div>
                     <div className="flex justify-between items-end">
-                      <div className="text-[14px] font-bold">{profile?.full_name}</div>
-                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md" />
+                      <div className="text-[12px] font-bold uppercase tracking-wide text-white">{profile?.full_name}</div>
+                      <div className="w-8 h-6 bg-gradient-to-r from-amber-300 to-amber-100 rounded-[2px] opacity-90 border border-amber-400/20" />
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <Button variant="ghost" className="w-full justify-between text-[13px] border-neutral-border">
+                  <Button variant="ghost" className="w-full justify-between text-[13px] border-neutral-border rounded-[3px] h-[40px]">
                     <span className="flex items-center gap-2">
                       <History size={16} /> Historique de la carte
                     </span>
                     <ChevronRight size={14} />
                   </Button>
-                  <button className="w-full py-3 text-[13px] text-status-error font-medium hover:bg-status-error/5 rounded-xl transition-colors border border-transparent hover:border-status-error/10">
+                  <button className="w-full py-3 text-[13px] text-status-error font-medium hover:bg-status-error/5 rounded-[3px] transition-colors border border-transparent hover:border-status-error/10">
                     Déclarer une perte / vol
                   </button>
                 </div>
               </div>
             ) : (
               <div className="text-center py-8">
-                <div className="w-16 h-16 rounded-full bg-neutral-soft flex items-center justify-center mx-auto mb-4 text-neutral-muted">
+                <div className="w-16 h-16 rounded-[3px] bg-neutral-soft flex items-center justify-center mx-auto mb-4 text-neutral-muted">
                   <CreditCard size={32} />
                 </div>
                 <p className="text-[14px] text-neutral-muted">Aucune carte liée.</p>
@@ -312,20 +314,20 @@ export default function ProfilePage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="p-8 rounded-[20px] bg-brand-dark text-white relative overflow-hidden group shadow-xl"
+            className="p-6 rounded-[3px] bg-brand-dark text-white relative overflow-hidden group shadow-premium border border-white/5"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-cta/10 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-150 transition-transform duration-700" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cta/15 rounded-full -mr-16 -mt-16 blur-2xl group-hover:scale-125 transition-transform duration-500" />
             
-            <h3 className="text-[18px] font-bold mb-3 relative z-10">Assistance 24/7</h3>
-            <p className="text-[13px] text-white/60 mb-6 relative z-10 leading-relaxed">
+            <h3 className="text-[16px] font-bold mb-2 relative z-10">Assistance 24/7</h3>
+            <p className="text-[13px] text-white/60 mb-5 relative z-10 leading-relaxed">
               Une question sur votre abonnement ou un problème technique ? Notre équipe est là pour vous aider.
             </p>
             
             <a 
               href="mailto:support@tram-way.ma"
-              className="flex items-center justify-center gap-2 w-full py-4 bg-white text-brand-dark rounded-xl text-[14px] font-bold hover:bg-cta hover:text-white transition-all duration-300 shadow-lg"
+              className="flex items-center justify-center gap-2 w-full py-3.5 bg-white text-brand-dark rounded-[3px] text-[13px] font-bold hover:bg-cta hover:text-white transition-all duration-200 shadow-card"
             >
-              <Mail size={18} />
+              <Mail size={16} />
               Nous contacter par email
             </a>
           </motion.div>

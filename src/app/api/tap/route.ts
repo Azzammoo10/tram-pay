@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
 
   const transactionId = crypto.randomUUID()
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+  const issuedAt = new Date()
 
   const { data: ticket, error: insertError } = await admin
     .from('tickets')
@@ -57,7 +58,13 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Failed to create ticket' }, { status: 500 })
   }
 
-  const qrPayload = generateQRPayload(ticket.id, card.user_id, expiresAt.toISOString())
+  const qrPayload = generateQRPayload(
+    transactionId,
+    card.user_id,
+    amount,
+    expiresAt.toISOString(),
+    issuedAt.toISOString()
+  )
 
   await admin
     .from('tickets')
