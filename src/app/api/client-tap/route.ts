@@ -28,8 +28,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const tapUrl = new URL('/api/tap', appUrl).toString()
+    const tapUrl = new URL('/api/tap', request.nextUrl).toString()
 
     const res = await fetch(tapUrl, {
       method: 'POST',
