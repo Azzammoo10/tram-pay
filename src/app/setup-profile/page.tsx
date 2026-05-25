@@ -144,26 +144,26 @@ export default function SetupProfilePage() {
                 className="space-y-6"
               >
                 {/* Step badge */}
-                <div className="flex items-center justify-between border-b border-neutral-border pb-4">
-                  <div className="text-[11px] font-bold text-cta tracking-wide uppercase">
+                <div className="flex items-center justify-between border-b border-neutral-border pb-4 mb-[24px]">
+                  <div className="text-[12px] font-bold text-cta tracking-[0.04em] uppercase">
                     Étape 2 sur 2 : Identité Numérique
                   </div>
-                  <div className="text-[10px] text-neutral-muted font-bold px-2 py-0.5 bg-surface-cloud rounded-[12px]">
+                  <div className="text-[12px] text-neutral-muted font-bold px-2.5 py-0.5 bg-[#F5F4F4] rounded-[12px] tracking-[0.04em] uppercase">
                     Obligatoire
                   </div>
                 </div>
 
-                <div className="text-center">
-                  <h1 className="text-[20px] font-bold text-brand-dark leading-tight mb-2">
+                <div className="text-center mb-[24px]">
+                  <h1 className="text-[20px] font-bold text-brand-dark leading-[1.0] tracking-[0px] mb-[15px]">
                     Bonjour, {userName} !
                   </h1>
-                  <p className="text-[13px] text-neutral-muted leading-relaxed">
+                  <p className="text-[14px] text-neutral-muted font-normal leading-[1.4] tracking-[0px] max-w-[65ch] mx-auto">
                     Pour finaliser votre inscription, veuillez configurer votre photo d&apos;identité numérique. Elle sera affichée lors des contrôles de titres de transport.
                   </p>
                 </div>
 
                 {/* Avatar uploader */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 mb-[24px]">
                   <div className="flex items-center gap-4 p-4 bg-surface-section border border-neutral-border rounded-[3px]">
                     <div className="relative w-16 h-16 rounded-[3px] overflow-hidden border border-neutral-border flex-shrink-0 bg-white flex items-center justify-center shadow-card">
                       {avatar ? (
@@ -210,25 +210,25 @@ export default function SetupProfilePage() {
                           <Upload size={16} />
                         </label>
                       </div>
-                      <span className="text-[10px] text-neutral-muted leading-tight">
+                      <span className="text-[12px] text-neutral-muted font-normal leading-[1.4] mt-[4px]">
                         Choisissez un avatar ou déposez votre photo (max 1Mo).
                       </span>
                     </div>
                   </div>
 
                   {imageError && (
-                    <div className="text-[11.5px] text-status-error font-medium px-1.5 py-1 bg-status-error/5 border border-status-error/15 rounded-[3px] flex items-center gap-1.5">
+                    <div className="text-[12px] text-status-error font-normal leading-[1.4] px-3 py-1.5 bg-status-error/5 border border-status-error/15 rounded-[3px] flex items-center gap-1.5 mt-[4px]">
                       <span>⚠️</span> {imageError}
                     </div>
                   )}
                 </div>
 
                 {/* Info card */}
-                <div className="p-3.5 bg-brand-purple/[0.03] border border-brand-purple/10 rounded-[3px] flex gap-3 text-[12px] leading-relaxed">
+                <div className="p-3.5 bg-brand-purple/[0.03] border border-brand-purple/10 rounded-[3px] flex gap-3 text-[12px] leading-[1.4] mb-[24px]">
                   <ShieldCheck className="text-brand-purple flex-shrink-0 mt-0.5" size={16} />
                   <div>
-                    <p className="font-bold text-brand-purple">Charte du voyageur Rabat-Salé :</p>
-                    <p className="text-neutral-faint mt-0.5">
+                    <p className="font-bold text-brand-purple tracking-[0.04em] uppercase text-[11px] leading-[1.0] mb-[4px]">Charte du voyageur Rabat-Salé :</p>
+                    <p className="text-neutral-muted mt-[4px] font-normal leading-[1.4]">
                       Votre photo d&apos;identité sera utilisée par les agents contrôleurs pour vérifier votre titre de transport lors des inspections.
                     </p>
                   </div>
@@ -254,8 +254,8 @@ export default function SetupProfilePage() {
                   <CheckCircle2 size={32} />
                 </motion.div>
                 <div className="space-y-1.5">
-                  <h2 className="text-[18px] font-bold text-brand-dark">Profil Validé !</h2>
-                  <p className="text-[13px] text-neutral-muted">
+                  <h2 className="text-[20px] font-bold text-brand-dark leading-[1.0] tracking-[0px]">Profil Validé !</h2>
+                  <p className="text-[14px] text-neutral-muted font-normal leading-[1.4] mt-[4px]">
                     Votre identité numérique est configurée. Redirection...
                   </p>
                 </div>
@@ -264,10 +264,10 @@ export default function SetupProfilePage() {
           </AnimatePresence>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-[24px]">
           <button
             onClick={handleSignOut}
-            className="text-[12.5px] text-neutral-muted hover:text-brand-dark flex items-center gap-1.5 font-medium transition-colors bg-white hover:bg-neutral-border/10 border border-neutral-border px-3 py-1.5 rounded-[3px] shadow-sm cursor-pointer"
+            className="text-[14px] text-neutral-text hover:text-cta flex items-center gap-1.5 font-normal transition-all duration-150 bg-white hover:bg-[#F5F4F4] border border-neutral-border px-4 py-2 rounded-[3px] shadow-card cursor-pointer"
           >
             <LogOut size={13} /> Se déconnecter
           </button>

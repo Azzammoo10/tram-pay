@@ -13,11 +13,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, helpText, icon, className = '', id, ...props }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
     return (
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col">
         {label && (
           <label
             htmlFor={inputId}
-            className="text-[14px] text-neutral-text font-medium leading-none mb-0.5"
+            className="text-[15px] text-neutral-text font-normal leading-[1.0] tracking-[0px] mb-[8px]"
           >
             {label}
           </label>
@@ -36,10 +36,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {error && (
-          <span className="text-[12px] text-status-error leading-snug">{error}</span>
+          <span className="text-[12px] font-normal leading-[1.4] text-status-error tracking-[0px] mt-[4px]">{error}</span>
         )}
         {helpText && !error && (
-          <span className="text-[12px] text-neutral-muted leading-snug">{helpText}</span>
+          <span className="text-[12px] font-normal leading-[1.4] text-neutral-muted tracking-[0px] mt-[4px]">{helpText}</span>
         )}
       </div>
     )

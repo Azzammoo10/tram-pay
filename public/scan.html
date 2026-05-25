@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Val-PN532 — Validateur de Transport Virtuel</title>
+<!-- Modern Premium Typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   /* --- DESIGN SYSTEM CONSTANTS & TOKENS --- */
   :root {
@@ -13,13 +17,17 @@
     --color-cta: #EA3D8F; /* Magenta Primary CTA */
     --color-cta-hover: #D63378; /* Magenta hover */
     --color-cta-active: #C11C60; /* Magenta active */
-    --color-text-primary: #2D2D2D; /* Dark Text */
+    --color-text-primary: #F5F4F4; /* Light Text */
+    --color-text-dark: #2D2D2D; /* Dark Text */
     --color-text-muted: #8A8A8A; /* Medium Gray */
-    --color-border: #E1E8ED; /* Light Border */
-    --color-bg-section: #F8F8F8; /* Off-White Background */
+    --color-border: rgba(255, 255, 255, 0.08); /* Transparent Border */
+    --color-bg-section: #0B0602; /* Dark theme background */
     --color-success: #10B981; /* Emerald Green */
     --color-warning: #F5AB32; /* Amber Warning */
     --color-error: #CF2E2E; /* Crimson Error */
+    
+    --shadow-premium: 0px 10px 40px rgba(0, 0, 0, 0.4);
+    --shadow-inset-bezel: inset 0 2px 8px rgba(255,255,255,0.05), inset 0 -2px 8px rgba(0,0,0,0.6);
   }
 
   * {
@@ -29,32 +37,39 @@
   }
 
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 14px;
     color: var(--color-text-primary);
-    background-color: var(--color-bg-section);
+    background: radial-gradient(circle at 50% 50%, #170E04 0%, #070301 100%);
+    min-height: 100vh;
     line-height: 1.4;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    padding-bottom: 3rem;
   }
 
   /* --- NAVIGATION BAR --- */
   nav {
-    background-color: var(--color-brand-dark);
-    padding: 0 1.5rem;
+    background-color: rgba(26, 14, 3, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 56px;
-    border-bottom: 2px solid var(--color-cta);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    height: 64px;
+    border-bottom: 1px solid rgba(234, 61, 143, 0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
 
   .nav-logo {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: #FFFFFF;
-    letter-spacing: -0.5px;
+    letter-spacing: 0px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -65,50 +80,55 @@
   }
 
   .badge-terminal {
-    background-color: rgba(234, 61, 143, 0.12);
+    background-color: rgba(234, 61, 143, 0.1);
     color: var(--color-cta);
     border: 1px solid rgba(234, 61, 143, 0.25);
     font-size: 10px;
     font-weight: 700;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 3px;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   /* --- LAYOUT STRUCTURE --- */
   main {
-    max-width: 960px;
+    max-width: 1040px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 2.5rem 1.5rem;
   }
 
   .page-header {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     text-align: center;
   }
 
   .page-header h1 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--color-brand-dark);
-    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    letter-spacing: 0px;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
   }
 
   .page-header p {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--color-text-muted);
-    margin-top: 4px;
+    margin-top: 6px;
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .grid-container {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: start;
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 850px) {
     .grid-container {
       grid-template-columns: 1.1fr 1fr;
     }
@@ -116,85 +136,122 @@
 
   /* --- CARD & PANEL BASE --- */
   .panel {
-    background-color: #FFFFFF;
-    border: 1px solid var(--color-border);
+    background: rgba(30, 18, 10, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 3px;
-    padding: 24px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 28px;
+    box-shadow: var(--shadow-premium);
+    position: relative;
+    overflow: hidden;
   }
 
   .panel-accent {
-    border-top: 4px solid var(--color-cta);
+    border-top: 3px solid var(--color-cta);
   }
 
   .panel-title {
     font-size: 11px;
     font-weight: 700;
-    color: var(--color-brand-purple);
+    color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
-    letter-spacing: .08em;
-    margin-bottom: 1.2rem;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--color-border);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  /* --- TERMINAL HARDWARE FRAME --- */
-  .terminal-bezel {
+  /* --- TERMINAL HARDWARE FRAME (ULTRA-REALISTIC) --- */
+  .terminal-wrapper {
     width: 100%;
-    max-width: 360px;
-    background-color: #150E07;
-    border: 8px solid #281E15;
-    border-radius: 6px;
-    padding: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
   }
 
+  .terminal-bezel {
+    width: 100%;
+    max-width: 350px;
+    background: linear-gradient(135deg, #2D1D13 0%, #150E09 50%, #0A0604 100%);
+    border: 10px solid #1C110A;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.65), 
+                inset 0 2px 4px rgba(255,255,255,0.08),
+                inset 0 -5px 12px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* High fidelity shadows & volumetric curves */
+  .terminal-bezel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 5%;
+    width: 90%;
+    height: 40%;
+    background: linear-gradient(rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: 12px;
+  }
+
   /* Glowing LED Light Strip */
   .terminal-led-bar {
     width: 100%;
-    height: 6px;
+    height: 8px;
     background-color: var(--color-brand-purple);
-    box-shadow: 0 0 10px var(--color-brand-purple);
-    margin-bottom: 16px;
-    border-radius: 3px;
-    transition: all 0.3s ease;
+    box-shadow: 0 0 12px var(--color-brand-purple);
+    margin-bottom: 20px;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+  }
+
+  .terminal-led-bar::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: linear-gradient(rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+    border-radius: 2px;
   }
   
   .terminal-led-bar.idle {
     background-color: var(--color-brand-purple);
-    box-shadow: 0 0 10px var(--color-brand-purple);
+    box-shadow: 0 0 12px var(--color-brand-purple);
   }
   
   .terminal-led-bar.reading {
     background-color: var(--color-warning);
-    box-shadow: 0 0 14px var(--color-warning);
+    box-shadow: 0 0 18px var(--color-warning);
     animation: led-pulse 0.4s infinite alternate;
   }
   
   .terminal-led-bar.success {
     background-color: var(--color-success);
-    box-shadow: 0 0 18px var(--color-success);
+    box-shadow: 0 0 24px var(--color-success);
   }
   
   .terminal-led-bar.reject {
     background-color: var(--color-error);
-    box-shadow: 0 0 18px var(--color-error);
-    animation: led-flash 0.2s infinite alternate;
+    box-shadow: 0 0 24px var(--color-error);
+    animation: led-flash 0.15s infinite alternate;
   }
 
   @keyframes led-pulse {
-    from { opacity: 0.5; }
-    to { opacity: 1; }
+    from { opacity: 0.4; filter: brightness(0.8); }
+    to { opacity: 1; filter: brightness(1.2); }
   }
   @keyframes led-flash {
-    from { opacity: 0.2; }
+    from { opacity: 0.3; }
     to { opacity: 1; }
   }
 
@@ -202,38 +259,52 @@
   .lcd-container {
     width: 100%;
     aspect-ratio: 4/3;
-    background-color: #120A05;
-    border: 3px solid #1E150F;
-    border-radius: 3px;
-    padding: 16px;
+    background-color: #0B0603;
+    border: 4px solid #170F09;
+    border-radius: 8px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     position: relative;
     overflow: hidden;
+    box-shadow: inset 0 5px 25px rgba(0,0,0,0.9), 0 2px 5px rgba(255,255,255,0.05);
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  /* CRT Scanline & Glare overlay effects */
+  /* Screen glass glaze curved gloss reflection */
   .lcd-container::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(rgba(18, 10, 5, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+    background: linear-gradient(rgba(18, 10, 5, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
     background-size: 100% 4px;
-    opacity: 0.2;
+    opacity: 0.25;
     pointer-events: none;
-    z-index: 3;
+    z-index: 10;
   }
 
   .lcd-container::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 25%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 70%);
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 25%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 60%);
+    transform: rotate(-10deg);
     pointer-events: none;
-    z-index: 4;
+    z-index: 11;
+  }
+
+  .lcd-glass-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.01) 60%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    z-index: 12;
   }
 
   .lcd-screen-inner {
@@ -247,54 +318,82 @@
     z-index: 2;
   }
 
-  /* LCD State Styling Variants */
-  .lcd-container.idle { border-color: rgba(85, 53, 109, 0.15); }
-  .lcd-container.idle .lcd-value { color: #FFFFFF; }
+  /* Scan laser line animation during loading */
+  .lcd-scanner-line {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    height: 2px;
+    background: rgba(234, 61, 143, 0.5);
+    box-shadow: 0 0 10px var(--color-cta), 0 0 2px #FFFFFF;
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 0.3s ease;
+  }
+
+  .lcd-container.reading .lcd-scanner-line {
+    opacity: 1;
+    animation: scanner-move 1.3s linear infinite;
+  }
+
+  @keyframes scanner-move {
+    0% { top: 5%; }
+    50% { top: 90%; }
+    100% { top: 5%; }
+  }
+
+  /* LCD Color states */
+  .lcd-container.idle { border-color: rgba(85, 53, 109, 0.25); }
+  .lcd-container.idle .lcd-value { color: #FFFFFF; text-shadow: 0 0 6px rgba(255,255,255,0.15); }
   .lcd-container.idle .lcd-title { color: #FFFFFF; }
 
-  .lcd-container.reading { border-color: rgba(245, 171, 50, 0.3); }
-  .lcd-container.reading .lcd-value { color: var(--color-warning); text-shadow: 0 0 4px var(--color-warning); }
+  .lcd-container.reading { border-color: rgba(245, 171, 50, 0.45); }
+  .lcd-container.reading .lcd-value { color: var(--color-warning); text-shadow: 0 0 8px var(--color-warning); }
   .lcd-container.reading .lcd-title { color: var(--color-warning); }
 
-  .lcd-container.success { border-color: rgba(16, 185, 129, 0.35); background-color: #081D10; }
-  .lcd-container.success .lcd-value { color: var(--color-success); text-shadow: 0 0 6px var(--color-success); }
+  .lcd-container.success { border-color: rgba(16, 185, 129, 0.55); background-color: #04140B; }
+  .lcd-container.success .lcd-value { color: var(--color-success); text-shadow: 0 0 10px var(--color-success); }
   .lcd-container.success .lcd-title { color: var(--color-success); }
 
-  .lcd-container.reject { border-color: rgba(207, 46, 46, 0.35); background-color: #210808; }
-  .lcd-container.reject .lcd-value { color: var(--color-error); text-shadow: 0 0 6px var(--color-error); }
+  .lcd-container.reject { border-color: rgba(207, 46, 46, 0.55); background-color: #170404; }
+  .lcd-container.reject .lcd-value { color: var(--color-error); text-shadow: 0 0 10px var(--color-error); }
   .lcd-container.reject .lcd-title { color: var(--color-error); }
 
   .lcd-header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-size: 9px;
-    font-family: monospace;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
     opacity: 0.5;
     color: #FFFFFF;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
 
   .lcd-value {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
-    font-family: monospace;
+    font-family: 'JetBrains Mono', monospace;
     margin-top: 4px;
-    transition: color 0.3s;
+    transition: color 0.3s, text-shadow 0.3s;
+    letter-spacing: -0.02em;
   }
 
   .lcd-body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    width: 100%;
   }
 
   .lcd-title {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: 0px;
     transition: color 0.3s;
   }
 
@@ -302,54 +401,56 @@
     font-size: 11px;
     opacity: 0.6;
     color: #FFFFFF;
-    max-w: 220px;
-    line-height: 1.3;
+    max-w: 230px;
+    line-height: 1.4;
   }
 
   .lcd-footer {
-    font-size: 9px;
-    font-family: monospace;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
     opacity: 0.4;
     color: #FFFFFF;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
 
   /* --- TARGET SENSOR ZONE --- */
   .sensor-zone {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
-    border: 3px dashed rgba(234, 61, 143, 0.25);
-    margin-top: 20px;
+    border: 3px dashed rgba(234, 61, 143, 0.35);
+    margin-top: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     position: relative;
-    background-color: rgba(255,255,255,0.01);
+    background: radial-gradient(circle, rgba(234, 61, 143, 0.02) 0%, transparent 80%);
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .sensor-zone:hover {
-    border-color: rgba(234, 61, 143, 0.6);
-    background-color: rgba(234, 61, 143, 0.03);
+    border-color: rgba(234, 61, 143, 0.7);
+    background-color: rgba(234, 61, 143, 0.04);
+    box-shadow: 0 0 20px rgba(234, 61, 143, 0.1);
   }
 
   .sensor-zone.dragover {
     border-color: var(--color-cta);
-    background-color: rgba(234, 61, 143, 0.1);
-    transform: scale(1.02);
+    background-color: rgba(234, 61, 143, 0.15);
+    transform: scale(1.04);
+    box-shadow: 0 0 30px rgba(234, 61, 143, 0.2);
   }
 
   /* CSS Contactless Wireless waves symbol */
   .nfc-waves {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     position: relative;
   }
 
@@ -358,25 +459,34 @@
     border: 2px solid var(--color-cta);
     border-radius: 50%;
     opacity: 0.7;
+    transition: border-color 0.3s;
   }
 
+  .lcd-container.success ~ .sensor-zone .nfc-waves span { border-color: var(--color-success); }
+  .lcd-container.reject ~ .sensor-zone .nfc-waves span { border-color: var(--color-error); }
+
   .nfc-waves span:nth-child(1) { width: 10px; height: 10px; border-width: 3px; background-color: var(--color-cta); }
-  .nfc-waves span:nth-child(2) { width: 22px; height: 22px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; }
-  .nfc-waves span:nth-child(3) { width: 34px; height: 34px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; }
+  .lcd-container.success ~ .sensor-zone .nfc-waves span:nth-child(1) { background-color: var(--color-success); }
+  .lcd-container.reject ~ .sensor-zone .nfc-waves span:nth-child(1) { background-color: var(--color-error); }
+  
+  .nfc-waves span:nth-child(2) { width: 24px; height: 24px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; }
+  .nfc-waves span:nth-child(3) { width: 38px; height: 38px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; }
 
   .sensor-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     color: #AC6899;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   .sensor-sub {
     font-size: 8px;
-    opacity: 0.35;
+    opacity: 0.4;
     color: #FFFFFF;
-    margin-top: 2px;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   /* Pulsing antenna waves animations on scan */
@@ -401,10 +511,117 @@
       opacity: 0.8;
     }
     100% {
-      width: 150px;
-      height: 150px;
+      width: 160px;
+      height: 160px;
       opacity: 0;
     }
+  }
+
+  /* --- PHYSICAL TICKET DISPENSER SLOT --- */
+  .dispenser-slot {
+    width: 220px;
+    height: 12px;
+    background: #0E0704;
+    border: 3px solid #1C110A;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    margin-top: -2px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 5;
+  }
+
+  .dispenser-slot::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 2px;
+    height: 2px;
+    background: #000000;
+    box-shadow: 0 0 5px rgba(0,0,0,0.8);
+  }
+
+  /* --- REALISTIC TICKET RECEIPT PRINTING --- */
+  .ticket-paper-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    perspective: 800px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .printed-ticket {
+    width: 180px;
+    background-color: #FFFFFF;
+    color: #1A0E03;
+    padding: 14px;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    line-height: 1.3;
+    transform-origin: top center;
+    transform: translateY(-100%) rotateX(-15deg);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+    border-top: 1px dashed #ABB8C3;
+  }
+
+  /* Serrated printed edge at the bottom */
+  .printed-ticket::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-image: linear-gradient(-45deg, transparent 4px, #FFFFFF 4px), linear-gradient(45deg, transparent 4px, #FFFFFF 4px);
+    background-size: 8px 8px;
+    background-repeat: repeat-x;
+  }
+
+  .printed-ticket.show {
+    transform: translateY(-4px) rotateX(5deg);
+    opacity: 1;
+  }
+
+  .ticket-header {
+    text-align: center;
+    border-bottom: 1px dashed rgba(26,14,3,0.25);
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+  }
+
+  .ticket-logo {
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: -0.5px;
+    margin-bottom: 2px;
+  }
+
+  .ticket-logo span {
+    color: var(--color-cta);
+  }
+
+  .ticket-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .ticket-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .ticket-divider {
+    border-top: 1px dashed rgba(26,14,3,0.15);
+    margin: 4px 0;
   }
 
   /* --- MIFARE CARD COMPOSITION --- */
@@ -412,53 +629,40 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px 0;
+    padding: 32px 0;
     perspective: 1000px;
   }
 
   .mifare-card {
-    width: 250px;
+    width: 280px;
     aspect-ratio: 1.586/1;
-    background: linear-gradient(135deg, #1A0E03 0%, #301740 50%, #55356D 100%);
+    background: linear-gradient(135deg, #1A0E03 0%, #3B1F4F 50%, #55356D 100%);
     border: 1px solid rgba(234, 61, 143, 0.25);
-    border-radius: 3px;
-    padding: 18px;
+    border-radius: 4px;
+    padding: 20px;
     color: #FFFFFF;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
     user-select: none;
-    z-index: 10;
+    z-index: 20;
+    transform-style: preserve-3d;
   }
 
   /* Premium Card Gloss shine reflection overlay */
   .mifare-card::before {
     content: '';
     position: absolute;
-    top: -100%;
-    left: -100%;
-    width: 300%;
-    height: 300%;
-    background: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0) 45%,
-      rgba(255, 255, 255, 0.1) 48%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.1) 52%,
-      rgba(255, 255, 255, 0) 55%
-    );
-    transition: all 0.6s ease;
+    inset: 0;
+    background: radial-gradient(circle at var(--shine-x, 50%) var(--shine-y, 50%), rgba(255,255,255,0.12) 0%, transparent 60%);
     pointer-events: none;
-  }
-
-  .mifare-card:hover::before {
-    top: -50%;
-    left: -50%;
+    transition: opacity 0.3s;
+    mix-blend-mode: color-dodge;
   }
 
   .mifare-card:hover {
-    box-shadow: 0 10px 25px rgba(234, 61, 143, 0.15);
+    box-shadow: 0 15px 35px rgba(234, 61, 143, 0.2);
   }
 
   .card-header {
@@ -472,23 +676,23 @@
     text-transform: uppercase;
     font-weight: 700;
     color: #AC6899;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     line-height: 1;
   }
 
   .card-brand-type {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     color: #FFFFFF;
-    margin-top: 2px;
-    opacity: 0.9;
+    margin-top: 3px;
+    opacity: 0.95;
   }
 
   /* Micro Contactless Logo overlay inside card */
   .card-nfc-indicator {
-    width: 14px;
-    height: 14px;
-    opacity: 0.6;
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -496,33 +700,35 @@
 
   /* Stylized Gold Chip */
   .card-chip {
-    width: 28px;
-    height: 20px;
-    background: linear-gradient(135deg, #F5AB32 0%, #FCB900 100%);
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 2px;
-    margin-top: 10px;
+    width: 32px;
+    height: 24px;
+    background: linear-gradient(135deg, #FCD34D 0%, #D97706 100%);
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    margin-top: 12px;
     position: relative;
     overflow: hidden;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), 0 1px 2px rgba(0,0,0,0.15);
   }
 
   .card-chip::before {
     content: '';
     position: absolute;
     inset: 1px;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.15);
     background-image: linear-gradient(90deg, transparent 50%, rgba(0,0,0,0.1) 50%), linear-gradient(transparent 50%, rgba(0,0,0,0.1) 50%);
     background-size: 4px 4px;
   }
 
   .card-uid {
-    font-family: monospace;
-    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
     font-weight: 700;
-    color: #AC6899;
-    letter-spacing: 2.2px;
-    margin-top: 12px;
+    color: #FFFFFF;
+    letter-spacing: 2.5px;
+    margin-top: 14px;
     opacity: 0.9;
+    text-shadow: 0.5px 0.5px 0.2px rgba(0,0,0,0.9);
   }
 
   .card-footer-row {
@@ -533,95 +739,122 @@
   }
 
   .card-holder-name {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    max-width: 140px;
+    letter-spacing: 0.8px;
+    max-width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    opacity: 0.85;
+    opacity: 0.9;
+    text-shadow: 0.5px 0.5px 0.2px rgba(0,0,0,0.85);
   }
 
   .card-balance-val {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
-    font-family: monospace;
+    font-family: 'JetBrains Mono', monospace;
     color: #AC6899;
   }
 
   /* --- CONTROL PANEL ELEMENTS --- */
   .options-toggle-group {
     display: flex;
-    gap: 8px;
+    gap: 12px;
   }
 
   .option-toggle {
     flex: 1;
-    padding: 10px;
-    border: 1px solid var(--color-border);
-    background-color: #FFFFFF;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.02);
     color: var(--color-text-muted);
     border-radius: 3px;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     text-align: center;
   }
 
   .option-toggle:hover {
-    background-color: var(--color-bg-section);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #FFFFFF;
   }
 
   .option-toggle.active {
     border-color: var(--color-cta);
-    background-color: rgba(234, 61, 143, 0.05);
+    background-color: rgba(234, 61, 143, 0.08);
     color: var(--color-cta);
+    box-shadow: 0 0 10px rgba(234, 61, 143, 0.1);
   }
 
   .input-text {
     width: 100%;
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 3px;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--color-text-primary);
-    background-color: #FFFFFF;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.02);
     outline: none;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   .input-text:focus {
     border-color: var(--color-cta);
+    background: rgba(255,255,255,0.04);
     box-shadow: 0 0 0 3px rgba(234, 61, 143, 0.1);
+  }
+
+  .input-text.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  select.input-text {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  select.input-text option {
+    background-color: #1F130B;
+    color: #FFFFFF;
   }
 
   .btn-ghost {
     width: 100%;
-    height: 40px;
+    height: 45px;
     background-color: transparent;
     color: var(--color-cta);
-    border: 1px solid rgba(234, 61, 143, 0.3);
+    border: 1px solid rgba(234, 61, 143, 0.35);
     border-radius: 3px;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
   }
 
-  .btn-ghost:hover {
-    background-color: rgba(234, 61, 143, 0.04);
+  .btn-ghost:hover:not(:disabled) {
+    background-color: rgba(234, 61, 143, 0.06);
     border-color: var(--color-cta);
+    box-shadow: 0 0 12px rgba(234, 61, 143, 0.12);
   }
 
   .btn-ghost:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
   }
 
@@ -629,44 +862,37 @@
   .receipt-box {
     margin-top: 1.5rem;
     border-radius: 3px;
-    padding: 14px;
-    font-size: 12px;
-    border: 1px dashed var(--color-border);
-    background-color: #FDFBFF;
-  }
-
-  .receipt-box {
-    margin-top: 1.5rem;
-    border-radius: 3px;
-    padding: 14px;
-    font-size: 12px;
-    border: 1px dashed var(--color-border);
-    background-color: #FDFBFF;
+    padding: 16px;
+    font-size: 13px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.01);
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--color-text-muted);
   }
 
   .receipt-row {
     display: flex;
     justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.03);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
   }
 
   .receipt-row:last-child {
     border-bottom: none;
   }
 
-  .rk { opacity: 0.6; }
-  .rv { font-weight: 700; font-family: monospace; }
+  .rk { opacity: 0.65; }
+  .rv { font-weight: 700; color: #FFFFFF; }
   .text-success { color: var(--color-success); }
   .text-error { color: var(--color-error); }
 
   .helper-notice {
-    font-size: 11.5px;
-    color: #706F6F;
-    line-height: 1.4;
-    margin-top: 12px;
-    padding: 10px;
-    background-color: #F5F4F4;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-top: 16px;
+    padding: 14px;
+    background-color: rgba(255,255,255,0.02);
     border-left: 3px solid var(--color-cta);
     border-radius: 3px;
   }
@@ -679,10 +905,11 @@
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
-  .badge.success { background-color: rgba(16, 185, 129, 0.1); color: var(--color-success); }
-  .badge.warning { background-color: rgba(245, 171, 50, 0.1); color: var(--color-warning); }
-  .badge.error { background-color: rgba(207, 46, 46, 0.1); color: var(--color-error); }
+  .badge.success { background-color: rgba(16, 185, 129, 0.1); color: var(--color-success); border: 1px solid rgba(16, 185, 129, 0.15); }
+  .badge.warning { background-color: rgba(245, 171, 50, 0.1); color: var(--color-warning); border: 1px solid rgba(245, 171, 50, 0.15); }
+  .badge.error { background-color: rgba(207, 46, 46, 0.1); color: var(--color-error); border: 1px solid rgba(207, 46, 46, 0.15); }
 </style>
 </head>
 <body>
@@ -706,57 +933,85 @@
     <div class="panel panel-accent" style="display: flex; flex-direction: column; align-items: center;">
       <div class="panel-title" style="width: 100%">Borne Centrale Rabat-Salé</div>
       
-      <div class="terminal-bezel" style="width: 100%; max-width: 360px;">
-        <!-- LED Light Bar -->
-        <div class="terminal-led-bar idle" id="led-bar"></div>
-        
-        <!-- CRT LCD Glass Screen -->
-        <div class="lcd-container idle" id="lcd-screen">
-          <div class="lcd-screen-inner">
-            <div class="lcd-header">
-              <span>Réseau Tramway</span>
-              <span>En ligne</span>
+      <div class="terminal-wrapper">
+        <div class="terminal-bezel">
+          <!-- LED Light Bar -->
+          <div class="terminal-led-bar idle" id="led-bar"></div>
+          
+          <!-- CRT LCD Glass Screen -->
+          <div class="lcd-container idle" id="lcd-screen">
+            <div class="lcd-glass-glare"></div>
+            <!-- Laser scanning line visual -->
+            <div class="lcd-scanner-line"></div>
+            
+            <div class="lcd-screen-inner">
+              <div class="lcd-header">
+                <span>Réseau Tramway</span>
+                <span>En ligne</span>
+              </div>
+              
+              <div class="lcd-body">
+                <div class="lcd-title" id="lcd-title">Présentez votre titre</div>
+                <div class="lcd-value" id="lcd-amount">7.00 DH</div>
+                <div class="lcd-desc" id="lcd-desc">Cliquez ou glissez votre carte sur le capteur ci-dessous</div>
+              </div>
+              
+              <div class="lcd-footer" id="lcd-bottom">
+                PRÊT POUR VALIDATION
+              </div>
+            </div>
+          </div>
+
+          <!-- Contactless Target Zone -->
+          <div class="sensor-zone" id="sensor-zone" 
+               ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave()" onclick="triggerTap()">
+            <div class="antenna-wave"></div>
+            
+            <div class="nfc-waves">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
             
-            <div class="lcd-body">
-              <div class="lcd-title" id="lcd-title">Présentez votre titre</div>
-              <div class="lcd-value" id="lcd-amount">7.00 DH</div>
-              <div class="lcd-desc" id="lcd-desc">Cliquez ou glissez votre carte sur le capteur ci-dessous</div>
-            </div>
-            
-            <div class="lcd-footer" id="lcd-bottom">
-              PRÊT POUR VALIDATION
-            </div>
+            <div class="sensor-label">CAPTEUR PN532</div>
+            <div class="sensor-sub">Taper ou Glisser la Carte</div>
           </div>
         </div>
 
-        <!-- Contactless Target Zone -->
-        <div class="sensor-zone" id="sensor-zone" 
-             ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave()" onclick="triggerTap()">
-          <div class="antenna-wave"></div>
-          
-          <div class="nfc-waves">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- Realistic ticket slot & paper receipt output -->
+        <div class="dispenser-slot"></div>
+        <div class="ticket-paper-container">
+          <div class="printed-ticket" id="printed-ticket">
+            <div class="ticket-header">
+              <div class="ticket-logo">Tram<span>Pay</span></div>
+              <div style="font-size: 6px; opacity: 0.5; margin-top: 1px;">SOCIETE DU TRAMWAY DE RABAT-SALE</div>
+            </div>
+            <div class="ticket-body">
+              <div class="ticket-row"><span class="rk">TITRE</span><span class="rv text-success">VALIDE</span></div>
+              <div class="ticket-divider"></div>
+              <div class="ticket-row"><span class="rk">TICKET ID</span><span class="rv" id="t-id">----</span></div>
+              <div class="ticket-row"><span class="rk">TARIF</span><span class="rv" id="t-fare">0.00 DH</span></div>
+              <div class="ticket-row"><span class="rk">DEBIT</span><span class="rv text-error" id="t-debit">0.00 DH</span></div>
+              <div class="ticket-row"><span class="rk">SOLDE</span><span class="rv text-success" id="t-balance">0.00 DH</span></div>
+              <div class="ticket-divider"></div>
+              <div class="ticket-row" style="font-size: 7px; opacity: 0.5;"><span class="rk">DATE</span><span class="rv" id="t-date">--/--/----</span></div>
+              <div class="ticket-row" style="font-size: 7px; opacity: 0.5;"><span class="rk">HEURE</span><span class="rv" id="t-time">--:--</span></div>
+            </div>
           </div>
-          
-          <div class="sensor-label">CAPTEUR PN532</div>
-          <div class="sensor-sub">Taper ou Glisser la Carte</div>
         </div>
       </div>
       
       <!-- Amount Selection Toggle -->
-      <div style="width: 100%; max-width: 360px; margin-top: 1.5rem;">
-        <label style="font-size: 13px; font-weight: 700; color: var(--color-text-primary); display: block; margin-bottom: 8px;">
+      <div style="width: 100%; max-width: 350px; margin-top: 2rem;">
+        <label style="font-size: 13px; font-weight: 600; color: #FFFFFF; display: block; margin-bottom: 10px;">
           Tarif / Montant du passage :
         </label>
         <div class="options-toggle-group">
           <button type="button" class="option-toggle active" id="toggle-7" onclick="setTarif(7.00)">
-            7.00 DH<br><span style="font-size: 9px; font-weight: normal; opacity: 0.8">Ticket Standard</span>
+            7.00 DH<br><span style="font-size: 9px; font-weight: normal; opacity: 0.7">Ticket Standard</span>
           </button>
           <button type="button" class="option-toggle" id="toggle-45" onclick="setTarif(45.00)">
-            45.00 DH<br><span style="font-size: 9px; font-weight: normal; opacity: 0.8">Recharge Spéciale</span>
+            45.00 DH<br><span style="font-size: 9px; font-weight: normal; opacity: 0.7">Recharge Spéciale</span>
           </button>
         </div>
       </div>
@@ -767,7 +1022,7 @@
       <div class="panel-title">Titre de Transport (Mifare Classic)</div>
       
       <!-- Connected Banner status -->
-      <div id="session-status-banner" style="display: none; padding: 12px; margin-bottom: 16px; font-size: 12px; border-left: 3px solid var(--color-success); background-color: rgba(16,185,129,0.06); color: #0f2e1a; font-weight: 600; border-radius: 3px; line-height: 1.4;">
+      <div id="session-status-banner" style="display: none; padding: 14px; margin-bottom: 20px; font-size: 12.5px; border-left: 3px solid var(--color-success); background-color: rgba(16,185,129,0.06); color: #B3F5D9; font-weight: 600; border-radius: 3px; line-height: 1.5;">
         ✓ Carte liée à votre session Tram-Pay
       </div>
 
@@ -805,40 +1060,40 @@
       </div>
 
       <!-- Advanced settings panel details -->
-      <details style="margin-top: 1.2rem; margin-bottom: 1.2rem; border: 1px solid var(--color-border); border-radius: 3px; background-color: #FAFAFA;" id="advanced-config-panel">
-        <summary style="padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--color-brand-purple); cursor: pointer; user-select: none; outline: none; display: flex; align-items: center; justify-content: space-between;">
+      <details style="margin-top: 1.2rem; margin-bottom: 1.2rem; border: 1px solid rgba(255,255,255,0.06); border-radius: 3px; background-color: rgba(0,0,0,0.2);" id="advanced-config-panel">
+        <summary style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #FFFFFF; cursor: pointer; user-select: none; outline: none; display: flex; align-items: center; justify-content: space-between;">
           <span>⚙️ Configuration de la Carte</span>
-          <span style="font-size: 10px; font-weight: normal; color: var(--color-text-muted);">(Modifier les valeurs de simulation...)</span>
+          <span style="font-size: 11px; font-weight: normal; color: var(--color-text-muted);">(Modifier les valeurs de simulation...)</span>
         </summary>
-        <div class="form-section" style="padding: 16px; border-top: 1px solid var(--color-border); background-color: #FFFFFF; margin-top: 0; display: flex; flex-direction: column; gap: 14px;">
+        <div class="form-section" style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.06); background-color: rgba(26,14,3,0.3); margin-top: 0; display: flex; flex-direction: column; gap: 16px;">
           
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-size: 12px; font-weight: 700;">Token de la carte (UUID Supabase)</label>
+            <label style="font-size: 12px; font-weight: 600; color: #FFFFFF;">Token de la carte (UUID Supabase)</label>
             <input type="text" id="edit-token" class="input-text font-mono" 
                    value="" placeholder="Détection automatique de session..." oninput="updateCardPreview()">
           </div>
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 12px; font-weight: 700;">Titulaire</label>
+              <label style="font-size: 12px; font-weight: 600; color: #FFFFFF;">Titulaire</label>
               <input type="text" id="edit-name" class="input-text" value="Sara Bennani" oninput="updateCardPreview()">
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 12px; font-weight: 700;">Solde simulé (DH)</label>
+              <label style="font-size: 12px; font-weight: 600; color: #FFFFFF;">Solde simulé (DH)</label>
               <input type="number" id="edit-balance" class="input-text font-mono" value="2450.00" oninput="updateCardPreview()">
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 12px; font-weight: 700;">Nombre de trajets</label>
+              <label style="font-size: 12px; font-weight: 600; color: #FFFFFF;">Nombre de trajets</label>
               <input type="number" id="edit-trips" class="input-text font-mono" value="47">
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <label style="font-size: 12px; font-weight: 700;">Statut de la carte (DB)</label>
-              <select id="edit-status" class="input-text" style="height: 38px;">
+              <label style="font-size: 12px; font-weight: 600; color: #FFFFFF;">Statut de la carte (DB)</label>
+              <select id="edit-status" class="input-text" style="height: 45px;">
                 <option value="ACTIVE">ACTIVE</option>
                 <option value="BLOCKED">BLOQUÉE (REJETTE)</option>
                 <option value="EXPIRED">EXPIRÉE (REJETTE)</option>
@@ -846,11 +1101,11 @@
             </div>
           </div>
 
-          <div style="padding-top: 8px;">
+          <div style="padding-top: 10px;">
             <button type="button" class="btn-ghost" id="btn-sync" onclick="syncCardStatus()">
               Synchroniser le statut dans Supabase
             </button>
-            <div id="sync-status-indicator" style="text-align: center; font-size: 11px; font-weight: 700; margin-top: 8px; min-height: 16px;"></div>
+            <div id="sync-status-indicator" style="text-align: center; font-size: 12px; font-weight: 600; margin-top: 10px; min-height: 18px;"></div>
           </div>
 
         </div>
@@ -903,6 +1158,28 @@ document.getElementById('edit-status').value = sessionData.status;
 let txAmount = sessionData.amount;
 setTarif(txAmount);
 updateCardPreview();
+
+// 3D Tilt calculation & dynamic metallic gloss reflection on Mifare Card
+const card = document.getElementById('mifare-card');
+card.addEventListener('mousemove', (e) => {
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const xc = rect.width / 2;
+  const yc = rect.height / 2;
+  const rotateX = -(y - yc) / 10;
+  const rotateY = (x - xc) / 10;
+  
+  card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+  card.style.setProperty('--shine-x', `${(x / rect.width) * 100}%`);
+  card.style.setProperty('--shine-y', `${(y / rect.height) * 100}%`);
+});
+
+card.addEventListener('mouseleave', () => {
+  card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+  card.style.setProperty('--shine-x', '50%');
+  card.style.setProperty('--shine-y', '50%');
+});
 
 // Web Audio API Synthesizer
 const AudioFeedback = {
@@ -1006,7 +1283,7 @@ async function fetchActiveUserCard() {
         banner.style.display = 'block';
         banner.style.borderLeftColor = 'var(--color-success)';
         banner.style.backgroundColor = 'rgba(16,185,129,0.06)';
-        banner.style.color = '#0f2e1a';
+        banner.style.color = '#B3F5D9';
         banner.innerHTML = `✓ Carte de <strong>${data.name}</strong> couplée automatiquement ! Statut : <span class="badge success">${data.status}</span>`;
       }
     } else {
@@ -1014,7 +1291,7 @@ async function fetchActiveUserCard() {
         banner.style.display = 'block';
         banner.style.borderLeftColor = 'var(--color-warning)';
         banner.style.backgroundColor = 'rgba(245,171,50,0.06)';
-        banner.style.color = '#3b2b11';
+        banner.style.color = '#FBE2B9';
         banner.innerHTML = `⚠️ Mode Manuel (Aucune session liée). Connectez-vous sur votre compte passager pour une liaison automatique.`;
       }
     }
@@ -1024,7 +1301,7 @@ async function fetchActiveUserCard() {
       banner.style.display = 'block';
       banner.style.borderLeftColor = 'var(--color-error)';
       banner.style.backgroundColor = 'rgba(207,46,46,0.06)';
-      banner.style.color = '#3a0f0f';
+      banner.style.color = '#F9D5D5';
       banner.innerHTML = `✕ Impossible de contacter le serveur d'authentification central. Mode manuel actif.`;
     }
   }
@@ -1117,6 +1394,7 @@ function onDragStart(e) {
   document.getElementById('mifare-card').style.opacity = '0.4';
 }
 
+// Disable Card Hover 3D Tilt during dragging
 function onDragEnd() {
   document.getElementById('mifare-card').style.opacity = '1';
 }
@@ -1151,8 +1429,8 @@ function animateCardTap() {
   const deltaY = (sensorRect.top + sensorRect.height/2) - (cardRect.top + cardRect.height/2);
   
   card.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease';
-  card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.9) rotate(-6deg)`;
-  card.style.boxShadow = '0 15px 30px rgba(0,0,0,0.3)';
+  card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.85) rotate(-8deg)`;
+  card.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5)';
   card.style.zIndex = '50';
   
   // Play initial scan sensor sound
@@ -1168,11 +1446,11 @@ function animateCardTap() {
 function resetCardPosition() {
   const card = document.getElementById('mifare-card');
   card.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease';
-  card.style.transform = 'none';
+  card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
   card.style.boxShadow = '';
   
   setTimeout(() => {
-    card.style.zIndex = '10';
+    card.style.zIndex = '20';
     card.style.transition = '';
   }, 500);
 }
@@ -1187,12 +1465,16 @@ async function triggerTap(isAnimated = false) {
   const desc = document.getElementById('lcd-desc');
   const bottom = document.getElementById('lcd-bottom');
   const receipt = document.getElementById('receipt-box');
+  const ticket = document.getElementById('printed-ticket');
 
   const token = document.getElementById('edit-token').value;
   const balance = parseFloat(document.getElementById('edit-balance').value) || 0;
   const status = document.getElementById('edit-status').value;
   const trips = parseInt(document.getElementById('edit-trips').value) || 0;
   const name = document.getElementById('edit-name').value;
+
+  // Withdraw previous ticket if active
+  ticket.classList.remove('show');
 
   // Change to scanning state
   screen.className = 'lcd-container reading';
@@ -1250,7 +1532,12 @@ async function triggerTap(isAnimated = false) {
         body: JSON.stringify({ token: token, amount: txAmount })
       });
       
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        throw new Error(`Erreur serveur (${res.status}) : réponse non-JSON`);
+      }
       
       if (!res.ok) {
         AudioFeedback.playReject();
@@ -1279,6 +1566,21 @@ async function triggerTap(isAnimated = false) {
         desc.textContent = `Bon voyage sur le réseau ! Débité : -${txAmount.toFixed(2)} DH.`;
         bottom.textContent = 'SYNC SUPABASE OK';
         
+        // Print physical high fidelity paper receipt ticket
+        document.getElementById('t-id').textContent = String(data.ticket_id).toUpperCase();
+        document.getElementById('t-fare').textContent = txAmount.toFixed(2) + ' DH';
+        document.getElementById('t-debit').textContent = '-' + txAmount.toFixed(2) + ' DH';
+        document.getElementById('t-balance').textContent = newBalance.toFixed(2) + ' DH';
+        
+        const nowObj = new Date();
+        document.getElementById('t-date').textContent = nowObj.toLocaleDateString('fr-FR');
+        document.getElementById('t-time').textContent = nowObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+        
+        // Ticket paper printing slides down animation!
+        setTimeout(() => {
+          ticket.classList.add('show');
+        }, 150);
+
         receipt.className = 'receipt-box';
         receipt.innerHTML = `<div class="receipt-row text-success"><span class="rk">Statut</span><span class="rv">VALIDE (✓)</span></div>
           <div class="receipt-row"><span class="rk">Transaction ID</span><span class="rv" style="font-size: 11px;">${data.ticket_id}</span></div>
@@ -1296,8 +1598,18 @@ async function triggerTap(isAnimated = false) {
       bottom.textContent = 'PANNE INTERNE';
       
       receipt.className = 'receipt-box';
+      let helpMsg = 'Vérifiez les logs de votre console et assurez-vous que le serveur Next.js tourne.';
+      if (window.location.protocol === 'file:') {
+        helpMsg = 'CORS Block : Ne double-cliquez pas sur le fichier HTML. Ouvrez plutôt <strong>http://localhost:3000/scan.html</strong> dans votre navigateur.';
+      } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        helpMsg = 'Assurez-vous que le serveur Next.js tourne sur le port 3000.';
+      } else {
+        helpMsg = `Le serveur distant a renvoyé une erreur ou est indisponible. Détails : ${err.message}`;
+      }
+      
       receipt.innerHTML = `<div class="receipt-row text-error"><span class="rk">Statut</span><span class="rv">PANNE RESEAU</span></div>
-        <div class="receipt-row"><span class="rk">Aide</span><span class="rv">Vérifiez que le serveur Next.js tourne sur localhost:3000.</span></div>`;
+        <div class="receipt-row"><span class="rk">Message</span><span class="rv" style="font-size: 9px;">${err.message}</span></div>
+        <div class="receipt-row"><span class="rk">Aide</span><span class="rv">${helpMsg}</span></div>`;
     } finally {
       tapping = false;
       if (isAnimated) resetCardPosition();

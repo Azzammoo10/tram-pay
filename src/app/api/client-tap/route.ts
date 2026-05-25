@@ -1,4 +1,6 @@
 import { NextRequest } from 'next/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { generateQRPayload } from '@/lib/hmac'
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -28,26 +30,66 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const tapUrl = new URL('/api/tap', request.nextUrl).toString()
+    const admin = createAdminClient()
 
-    const res = await fetch(tapUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RPi_MACHINE_SECRET}`,
-      },
-      body: JSON.stringify({ token, amount }),
-    })
+    // 1. Fetch card status
+    const { data: card, error: cardError } = await admin
+      .from('cards')
+      .select('id, user_id')
+      .eq('card_token', token)
+      .eq('status', 'ACTIVE')
+      .single()
 
-    const data = await res.json()
-
-    if (!res.ok) {
-      return Response.json({ error: data.error || 'Tap failed' }, { status: res.status, headers: CORS_HEADERS })
+    if (cardError || !card) {
+      return Response.json({ error: 'Card not found or inactive' }, { status: 404, headers: CORS_HEADERS })
     }
 
-    return Response.json(data, { headers: CORS_HEADERS })
+    const transactionId = crypto.randomUUID()
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+    const issuedAt = new Date()
+
+    // 2. Insert new ticket
+    const { data: ticket, error: insertError } = await admin
+      .from('tickets')
+      .insert({
+        user_id: card.user_id,
+        card_id: card.id,
+        transaction_id: transactionId,
+        qr_payload: 'pending',
+        amount,
+        status: 'PENDING',
+        expires_at: expiresAt.toISOString(),
+      })
+      .select('id')
+      .single()
+
+    if (insertError || !ticket) {
+      return Response.json({ error: 'Failed to create ticket' }, { status: 500, headers: CORS_HEADERS })
+    }
+
+    // 3. Generate HMAC QR signature payload
+    const qrPayload = generateQRPayload(
+      transactionId,
+      card.user_id,
+      amount,
+      expiresAt.toISOString(),
+      issuedAt.toISOString()
+    )
+
+    // 4. Update ticket with signed payload
+    await admin
+      .from('tickets')
+      .update({ qr_payload: qrPayload })
+      .eq('id', ticket.id)
+
+    return Response.json({
+      success: true,
+      ticket_id: ticket.id,
+      expires_at: expiresAt.toISOString(),
+    }, { headers: CORS_HEADERS })
   } catch (err: any) {
     console.error('Client-tap proxy error:', err)
-    return Response.json({ error: 'Failed to proxy request: ' + err.message }, { status: 500, headers: CORS_HEADERS })
+    return Response.json({ error: 'Failed to process tap request: ' + err.message }, { status: 500, headers: CORS_HEADERS })
   }
 }
+

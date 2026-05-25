@@ -36,16 +36,17 @@
   }
 
   body {
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     color: var(--color-neutral-text);
     background-color: var(--color-surface-section); /* Use clean off-white background as default */
     line-height: 1.4;
-    letter-spacing: -0.01em;
+    letter-spacing: 0px;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.02em;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 0px;
     color: var(--color-brand-dark);
   }
 
@@ -55,10 +56,40 @@
 }
 
 @layer components {
+  /* Typography scale helper classes */
+  .title-page {
+    @apply text-[22px] sm:text-[28px] font-bold leading-[1.2] tracking-[0px] text-brand-dark mb-[24px];
+  }
+
+  .title-section {
+    @apply text-[18px] sm:text-[20px] font-bold leading-[1.0] tracking-[0px] text-brand-dark mb-[20px];
+  }
+
+  .title-card {
+    @apply text-[18px] font-normal leading-[1.0] tracking-[0px] text-brand-dark mb-[15px];
+  }
+
+  .text-label {
+    @apply text-[15px] font-normal leading-[1.0] tracking-[0px] text-neutral-text;
+  }
+
+  .text-label-uppercase {
+    @apply text-[11px] font-bold leading-[1.0] tracking-[0.04em] uppercase text-neutral-muted;
+  }
+
+  .text-body {
+    @apply text-[14px] font-normal leading-[1.4] tracking-[0px] text-neutral-text max-w-[65ch];
+  }
+
+  .text-caption {
+    @apply text-[12px] font-normal leading-[1.4] tracking-[0px] text-neutral-muted;
+  }
+
+  /* Animated Interactive Elements */
   .btn-cta {
     @apply w-full h-[45px] flex items-center justify-center gap-2 bg-cta text-white text-[15px] font-normal
-           rounded-[3px] border-none cursor-pointer transition-all duration-200
-           hover:bg-cta-hover active:bg-cta-active active:scale-[0.98]
+           rounded-[3px] border-none cursor-pointer transition-all duration-250 ease-out
+           hover:bg-cta-hover active:bg-cta-active
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-cta/30 focus-visible:ring-offset-1
            disabled:bg-neutral-soft disabled:cursor-not-allowed disabled:opacity-60;
@@ -66,8 +97,8 @@
 
   .btn-ghost {
     @apply w-full h-[45px] flex items-center justify-center gap-2 bg-transparent text-brand-dark text-[14px] font-normal
-           rounded-[0px] border border-neutral-border cursor-pointer transition-all duration-200
-           hover:bg-surface-section hover:text-cta hover:border-neutral-border active:bg-neutral-border active:border-cta
+           rounded-[0px] border border-neutral-border cursor-pointer transition-all duration-250 ease-out
+           hover:bg-[#F5F4F4] hover:text-cta hover:border-cta active:bg-neutral-border active:border-cta
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-cta/30 focus-visible:ring-offset-1
            disabled:opacity-50 disabled:cursor-not-allowed;
@@ -75,7 +106,7 @@
 
   .input-base {
     @apply w-full border border-neutral-border rounded-[3px]
-           px-4 py-3 text-sm text-neutral-text placeholder:text-neutral-muted
+           px-4 py-3 text-[14px] text-neutral-text placeholder:text-neutral-muted
            transition-all duration-200 bg-white
            focus:outline-none focus:border-cta focus:ring-4 focus:ring-cta/10;
   }
@@ -84,14 +115,14 @@
     @apply bg-white border border-neutral-border rounded-[3px]
            p-6 shadow-card
            hover:shadow-premium
-           transition-all duration-300;
+           transition-all duration-300 ease-out;
   }
 
   .card-accent {
     @apply bg-white border border-neutral-border rounded-[3px]
            p-6 shadow-card
-           relative overflow-hidden transition-all duration-300
-           hover:shadow-premium hover:-translate-y-0.5;
+           relative overflow-hidden transition-all duration-300 ease-out
+           hover:shadow-premium;
   }
 
   .card-accent::before {
@@ -100,8 +131,20 @@
     background-color: var(--color-cta);
   }
 
-  .badge-primary { @apply bg-cta text-white font-bold px-3 py-1 rounded-[12px] text-[12px] inline-block; }
-  .badge-success { @apply bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20 font-bold px-3 py-1 rounded-[12px] text-[12px] inline-block; }
-  .badge-warning { @apply bg-[#F5AB32]/10 text-[#F5AB32] border border-[#F5AB32]/20 font-bold px-3 py-1 rounded-[12px] text-[12px] inline-block; }
-  .badge-error   { @apply bg-status-error/10 text-status-error border border-status-error/20 font-bold px-3 py-1 rounded-[12px] text-[12px] inline-block; }
+  /* Status Badges conforming to typography */
+  .badge-primary {
+    @apply bg-cta text-white font-bold px-3 py-1 rounded-[12px] text-[12px] leading-none tracking-[0.04em] uppercase inline-block;
+  }
+
+  .badge-success {
+    @apply bg-[#10B981]/10 text-[#10B981] border border-[#10B981]/20 font-bold px-3 py-1 rounded-[12px] text-[12px] leading-none tracking-[0.04em] uppercase inline-block;
+  }
+
+  .badge-warning {
+    @apply bg-[#F5AB32]/10 text-[#F5AB32] border border-[#F5AB32]/20 font-bold px-3 py-1 rounded-[12px] text-[12px] leading-none tracking-[0.04em] uppercase inline-block;
+  }
+
+  .badge-error {
+    @apply bg-status-error/10 text-status-error border border-status-error/20 font-bold px-3 py-1 rounded-[12px] text-[12px] leading-none tracking-[0.04em] uppercase inline-block;
+  }
 }
