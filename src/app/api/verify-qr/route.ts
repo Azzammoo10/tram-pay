@@ -58,11 +58,6 @@ export async function POST(request: NextRequest) {
     return Response.json({ valid: false, reason: 'not_found', user: userDetails })
   }
 
-  // Screenshot check: scanned payload must match current db value
-  if (ticket.qr_payload !== qr_payload) {
-    return Response.json({ valid: false, reason: 'stale_qr', user: userDetails, ticket })
-  }
-
   if (ticket.status === 'EXPIRED' || new Date(ticket.expires_at) < new Date()) {
     return Response.json({ valid: false, reason: 'expired', user: userDetails, ticket })
   }
