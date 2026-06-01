@@ -57,7 +57,7 @@ export default function DashboardPage() {
 
   const computeState = useCallback((t: Ticket | null): DashboardState => {
     if (!t) return 'waiting'
-    if (t.status === 'USED' || t.status === 'EXPIRED') return 'expired'
+    if (t.status === 'EXPIRED') return 'expired'
     if (new Date(t.expires_at) < new Date()) return 'expired'
     return 'active'
   }, [])
@@ -98,7 +98,7 @@ export default function DashboardPage() {
         .from('tickets')
         .select('*')
         .eq('user_id', user.id)
-        .eq('status', 'PENDING')
+        .in('status', ['PENDING', 'USED'])
         .gt('expires_at', new Date().toISOString())
         .order('generated_at', { ascending: false })
         .limit(1)

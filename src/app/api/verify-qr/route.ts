@@ -63,10 +63,6 @@ export async function POST(request: NextRequest) {
     return Response.json({ valid: false, reason: 'stale_qr', user: userDetails, ticket })
   }
 
-  if (ticket.status === 'USED') {
-    return Response.json({ valid: false, reason: 'already_used', user: userDetails, ticket })
-  }
-
   if (ticket.status === 'EXPIRED' || new Date(ticket.expires_at) < new Date()) {
     return Response.json({ valid: false, reason: 'expired', user: userDetails, ticket })
   }

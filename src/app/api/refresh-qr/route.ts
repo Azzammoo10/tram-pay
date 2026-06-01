@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 5. Verify status and expiry
-    if (ticket.status !== 'PENDING') {
+    if (ticket.status !== 'PENDING' && ticket.status !== 'USED') {
       return Response.json({ error: 'Ticket is already used or expired' }, { status: 400 })
     }
 
