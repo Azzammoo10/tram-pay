@@ -28,4 +28,6 @@ export interface Ticket {
   generated_at: string
   expires_at: string
   used_at: string | null
+  current_line?: string
+  line_switched?: boolean
 }

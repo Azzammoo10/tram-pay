@@ -16,6 +16,8 @@ interface TravelerInfo {
 interface TicketInfo {
   id: string
   expires_at: string
+  current_line?: string
+  line_switched?: boolean
 }
 
 type VerificationStatus = 'loading' | 'valid' | 'invalid'
@@ -35,6 +37,7 @@ function TicketVerifier() {
   useEffect(() => {
     if (ticket?.expires_at) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFormattedTime(
           new Date(ticket.expires_at).toLocaleTimeString('fr-FR', {
             hour: '2-digit',
@@ -63,6 +66,7 @@ function TicketVerifier() {
     }
 
     const initialRemaining = new Date(ticket.expires_at).getTime() - Date.now()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCountdown(formatCountdown(initialRemaining))
 
     const interval = setInterval(() => {
@@ -80,6 +84,7 @@ function TicketVerifier() {
 
   useEffect(() => {
     if (!payload) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus('invalid')
       setReason('missing_payload')
       return
@@ -297,6 +302,20 @@ function TicketVerifier() {
                             {String(ticket.id).slice(-8).toUpperCase()}
                           </span>
                         </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">
+                        <span className="text-neutral-muted flex items-center gap-1.5"><Clock size={13} /> Ligne active</span>
+                        <span className={`px-2 py-0.5 rounded-[3px] text-[10px] font-bold text-white ${ticket.current_line === 'L2' ? 'bg-[#55356D]' : 'bg-[#EA3D8F]'}`}>
+                          {ticket.current_line || 'L1'}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">
+                        <span className="text-neutral-muted flex items-center gap-1.5"><Clock size={13} /> Correspondance</span>
+                        <span className={`text-[11px] font-bold uppercase tracking-[0.02em] ${ticket.line_switched ? 'text-[#F5AB32]' : 'text-[#437A22]'}`}>
+                          {ticket.line_switched ? 'Déjà effectuée (Bloquée)' : 'Non utilisée (1 disponible)'}
+                        </span>
                       </div>
 
                       <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">

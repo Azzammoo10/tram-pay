@@ -31,6 +31,34 @@ export default function DashboardPage() {
   const [userName, setUserName] = useState<string>('Voyageur')
   const [copied, setCopied] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [switchingLine, setSwitchingLine] = useState(false)
+
+  const handleSwitchLine = async () => {
+    if (!ticket || ticket.line_switched || switchingLine) return
+    setSwitchingLine(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/switch-line', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setTicket(prev => prev ? { 
+          ...prev, 
+          current_line: data.current_line, 
+          line_switched: data.line_switched 
+        } : null)
+      } else {
+        setError(data.error || 'Erreur lors du changement de ligne')
+      }
+    } catch (err) {
+      console.error('Failed to switch line:', err)
+      setError('Panne de communication : impossible de changer de ligne')
+    } finally {
+      setSwitchingLine(false)
+    }
+  }
 
   const shouldReduceMotion = useReducedMotion()
   const [isUnderFiveMinutes, setIsUnderFiveMinutes] = useState(false)
@@ -385,9 +413,39 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
+                  {/* Line Switch Button with 1-change limit */}
+                  <div className="w-full max-w-[280px] mt-1">
+                    <button
+                      onClick={handleSwitchLine}
+                      disabled={ticket.line_switched || switchingLine}
+                      className={`w-full h-[36px] text-[12px] font-bold uppercase tracking-[0.04em] rounded-[3px] flex items-center justify-center gap-2 border transition-all ${
+                        ticket.line_switched
+                          ? 'bg-[#F5F4F4] text-neutral-muted border-neutral-border cursor-not-allowed'
+                          : 'bg-white text-cta hover:bg-[#EA3D8F]/5 border-cta hover:border-[#EA3D8F] active:scale-95 cursor-pointer'
+                      }`}
+                    >
+                      {switchingLine ? (
+                        'Traitement...'
+                      ) : ticket.line_switched ? (
+                        <span>⚠️ Correspondance utilisée</span>
+                      ) : (
+                        `Changer de ligne vers ${ticket.current_line === 'L2' ? 'L1' : 'L2'}`
+                      )}
+                    </button>
+                    {error && (
+                      <p className="text-[11px] text-[#CF2E2E] mt-1 text-center font-normal">{error}</p>
+                    )}
+                  </div>
+
                   {/* Transaction Context Meta Table */}
-                  <div className="w-full max-w-[280px] border-t border-neutral-border/60 pt-[16px] mt-1 space-y-2 text-left text-[12px] leading-[1.4]">
+                  <div className="w-full max-w-[280px] border-t border-neutral-border/60 pt-[16px] mt-2 space-y-2 text-left text-[12px] leading-[1.4]">
                     <div className="flex justify-between py-1"><span className="text-neutral-muted">Opérateur</span><span className="font-bold text-brand-dark">Tramway Rabat-Salé</span></div>
+                    <div className="flex justify-between py-1">
+                      <span className="text-neutral-muted">Ligne active</span>
+                      <span className={`px-2 py-0.5 rounded-[3px] text-[10px] font-bold text-white ${ticket.current_line === 'L2' ? 'bg-[#55356D]' : 'bg-[#EA3D8F]'}`}>
+                        {ticket.current_line || 'L1'}
+                      </span>
+                    </div>
                     <div className="flex justify-between py-1"><span className="text-neutral-muted">Tarif appliqué</span><span className="font-bold text-brand-dark">7.00 DH</span></div>
                     <div className="flex justify-between py-1"><span className="text-neutral-muted">ID Ticket</span><span className="font-mono font-bold text-[#55356D] truncate max-w-[130px]" title={ticket.transaction_id}>{ticket.transaction_id.slice(-8).toUpperCase()}</span></div>
                   </div>

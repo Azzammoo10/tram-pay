@@ -59,6 +59,8 @@ export async function POST(request: NextRequest) {
         amount,
         status: 'PENDING',
         expires_at: expiresAt.toISOString(),
+        current_line: 'L1',
+        line_switched: false,
       })
       .select('id')
       .single()

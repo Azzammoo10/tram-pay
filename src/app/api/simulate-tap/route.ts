@@ -40,6 +40,8 @@ export async function GET() {
       amount: 7.0,
       status: 'PENDING',
       expires_at: expiresAt.toISOString(),
+      current_line: 'L1',
+      line_switched: false,
     })
     .select('id')
     .single()

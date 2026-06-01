@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
   try {
     const { data: ticket, error } = await admin
       .from('tickets')
-      .select('id, status, expires_at, qr_payload')
+      .select('id, status, expires_at, qr_payload, current_line, line_switched')
       .eq('transaction_id', result.transactionId)
       .single()
 
@@ -78,7 +78,9 @@ export async function POST(request: NextRequest) {
       user: userDetails, 
       ticket: {
         id: ticket.id,
-        expires_at: ticket.expires_at
+        expires_at: ticket.expires_at,
+        current_line: ticket.current_line,
+        line_switched: ticket.line_switched
       } 
     })
   } catch (dbErr) {
