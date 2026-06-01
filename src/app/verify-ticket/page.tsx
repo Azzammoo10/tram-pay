@@ -265,8 +265,8 @@ function TicketVerifier() {
                         </div>
                         <div className="p-3 bg-surface-section border border-neutral-border rounded-[3px] text-left">
                           <span className="text-[11px] uppercase tracking-[0.04em] font-bold text-neutral-muted block">ID Unique</span>
-                          <span className="text-[12px] font-mono font-bold text-cta block truncate mt-1" title={ticket.id}>
-                            {ticket.id.slice(-8).toUpperCase()}
+                          <span className="text-[12px] font-mono font-bold text-cta block truncate mt-1" title={String(ticket.id)}>
+                            {String(ticket.id).slice(-8).toUpperCase()}
                           </span>
                         </div>
                       </div>
