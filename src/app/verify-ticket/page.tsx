@@ -411,7 +411,7 @@ function TicketVerifier() {
                     <div>
                       <p className="font-bold text-status-error uppercase tracking-[0.04em] text-[11px] leading-[1.0] mb-[4px]">Consignes pour le contrôleur :</p>
                       <p className="text-brand-dark/70 font-normal leading-[1.4]">
-                        Veuillez demander au voyageur de présenter sa carte de transport physique MIFARE sur l'un des valideurs ou de générer un nouveau titre de transport depuis son espace personnel.
+                        Veuillez demander au voyageur de présenter sa carte de transport physique MIFARE sur l&apos;un des valideurs ou de générer un nouveau titre de transport depuis son espace personnel.
                       </p>
                     </div>
                   </div>

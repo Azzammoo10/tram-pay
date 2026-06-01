@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { LayoutDashboard, LogOut, Menu, X, User, CreditCard, ScanLine, ChevronLeft, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, LogOut, Menu, X, User, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/ui/Logo'
 
@@ -134,10 +134,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: '/profile', label: 'Profil Voyageur', icon: User },
   ]
 
-  const outilsItems = [
-    { href: '/verify-ticket', label: 'Vérifier un titre', icon: ScanLine },
-  ]
-
   const sessionItems = [
     { href: '#', label: 'Déconnexion', icon: LogOut, action: true },
   ]
@@ -169,7 +165,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Navigation panel */}
         <nav className="flex-1 flex flex-col pt-[24px]">
           {renderNavGroup('Voyageur', voyageurItems)}
-          {renderNavGroup('Outils', outilsItems)}
           {renderNavGroup('Session', sessionItems)}
         </nav>
 
@@ -262,7 +257,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               {/* Navigation Group list */}
               <nav className="flex-1 flex flex-col pt-[24px] overflow-y-auto">
                 {renderNavGroup('Voyageur', voyageurItems)}
-                {renderNavGroup('Outils', outilsItems)}
                 {renderNavGroup('Session', sessionItems)}
               </nav>
 
