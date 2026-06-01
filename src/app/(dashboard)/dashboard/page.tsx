@@ -21,6 +21,18 @@ function formatCountdown(ms: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
 
+function getTramName(ticketId: number | string | undefined): string {
+  if (!ticketId) return 'Alstom Citadis N° 101'
+  const idStr = String(ticketId)
+  let hash = 0
+  for (let i = 0; i < idStr.length; i++) {
+    hash = idStr.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  const tams = [103, 105, 108, 112, 115, 119, 124, 127, 129, 132, 138, 142, 144]
+  const index = Math.abs(hash) % tams.length
+  return `Alstom Citadis N° ${tams[index]}`
+}
+
 export default function DashboardPage() {
   const [ticket, setTicket] = useState<Ticket | null>(null)
   const [state, setState] = useState<DashboardState>('waiting')
@@ -444,6 +456,12 @@ export default function DashboardPage() {
                       <span className="text-neutral-muted">Ligne active</span>
                       <span className={`px-2 py-0.5 rounded-[3px] text-[10px] font-bold text-white ${ticket.current_line === 'L2' ? 'bg-[#55356D]' : 'bg-[#EA3D8F]'}`}>
                         {ticket.current_line || 'L1'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between py-1">
+                      <span className="text-neutral-muted">Véhicule (Rame)</span>
+                      <span className="font-bold text-brand-dark font-mono">
+                        {getTramName(ticket.id)}
                       </span>
                     </div>
                     <div className="flex justify-between py-1"><span className="text-neutral-muted">Tarif appliqué</span><span className="font-bold text-brand-dark">7.00 DH</span></div>

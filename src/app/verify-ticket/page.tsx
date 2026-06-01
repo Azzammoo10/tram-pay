@@ -22,6 +22,18 @@ interface TicketInfo {
 
 type VerificationStatus = 'loading' | 'valid' | 'invalid'
 
+function getTramName(ticketId: number | string | undefined): string {
+  if (!ticketId) return 'Alstom Citadis N° 101'
+  const idStr = String(ticketId)
+  let hash = 0
+  for (let i = 0; i < idStr.length; i++) {
+    hash = idStr.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  const tams = [103, 105, 108, 112, 115, 119, 124, 127, 129, 132, 138, 142, 144]
+  const index = Math.abs(hash) % tams.length
+  return `Alstom Citadis N° ${tams[index]}`
+}
+
 function TicketVerifier() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -308,6 +320,13 @@ function TicketVerifier() {
                         <span className="text-neutral-muted flex items-center gap-1.5"><Clock size={13} /> Ligne active</span>
                         <span className={`px-2 py-0.5 rounded-[3px] text-[10px] font-bold text-white ${ticket.current_line === 'L2' ? 'bg-[#55356D]' : 'bg-[#EA3D8F]'}`}>
                           {ticket.current_line || 'L1'}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">
+                        <span className="text-neutral-muted flex items-center gap-1.5"><Clock size={13} /> Véhicule (Rame)</span>
+                        <span className="font-bold text-brand-dark font-mono">
+                          {getTramName(ticket.id)}
                         </span>
                       </div>
 
