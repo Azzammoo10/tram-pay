@@ -48,32 +48,41 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const { data: ticket, error } = await admin
-    .from('tickets')
-    .select('id, status, expires_at, qr_payload')
-    .eq('transaction_id', result.transactionId)
-    .single()
+  try {
+    const { data: ticket, error } = await admin
+      .from('tickets')
+      .select('id, status, expires_at, qr_payload')
+      .eq('transaction_id', result.transactionId)
+      .single()
 
-  if (error || !ticket) {
-    return Response.json({ valid: false, reason: 'not_found', user: userDetails })
+    if (error || !ticket) {
+      return Response.json({ valid: false, reason: 'not_found', user: userDetails })
+    }
+
+    if (ticket.status === 'EXPIRED' || new Date(ticket.expires_at) < new Date()) {
+      return Response.json({ valid: false, reason: 'expired', user: userDetails, ticket })
+    }
+
+    // Update ticket to USED upon first controller validation
+    const { error: updateError } = await admin
+      .from('tickets')
+      .update({ status: 'USED', used_at: new Date().toISOString() })
+      .eq('id', ticket.id)
+
+    if (updateError) {
+      console.error('Failed to update ticket status to USED:', updateError)
+    }
+
+    return Response.json({ 
+      valid: true, 
+      user: userDetails, 
+      ticket: {
+        id: ticket.id,
+        expires_at: ticket.expires_at
+      } 
+    })
+  } catch (dbErr) {
+    console.error('Database verification error:', dbErr)
+    return Response.json({ valid: false, reason: 'network_error', user: userDetails })
   }
-
-  if (ticket.status === 'EXPIRED' || new Date(ticket.expires_at) < new Date()) {
-    return Response.json({ valid: false, reason: 'expired', user: userDetails, ticket })
-  }
-
-  // Update ticket to USED upon first controller validation
-  await admin
-    .from('tickets')
-    .update({ status: 'USED', used_at: new Date().toISOString() })
-    .eq('id', ticket.id)
-
-  return Response.json({ 
-    valid: true, 
-    user: userDetails, 
-    ticket: {
-      id: ticket.id,
-      expires_at: ticket.expires_at
-    } 
-  })
 }

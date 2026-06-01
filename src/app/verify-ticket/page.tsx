@@ -31,6 +31,25 @@ function TicketVerifier() {
   const [traveler, setTraveler] = useState<TravelerInfo | null>(null)
   const [ticket, setTicket] = useState<TicketInfo | null>(null)
 
+  const [formattedTime, setFormattedTime] = useState<string>('')
+  useEffect(() => {
+    if (ticket?.expires_at) {
+      try {
+        setFormattedTime(
+          new Date(ticket.expires_at).toLocaleTimeString('fr-FR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })
+        )
+      } catch {
+        setFormattedTime('--:--:--')
+      }
+    } else {
+      setFormattedTime('')
+    }
+  }, [ticket?.expires_at])
+
   useEffect(() => {
     if (!payload) {
       setStatus('invalid')
@@ -255,7 +274,7 @@ function TicketVerifier() {
                       <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">
                         <span className="text-neutral-muted flex items-center gap-1.5"><Clock size={13} /> Fin de validité</span>
                         <span className="font-bold text-brand-dark font-mono">
-                          {new Date(ticket.expires_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                          {formattedTime}
                         </span>
                       </div>
                     </motion.div>
