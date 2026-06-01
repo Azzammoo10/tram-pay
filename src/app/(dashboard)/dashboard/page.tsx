@@ -343,8 +343,6 @@ export default function DashboardPage() {
                     <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-cta" />
                     <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-cta" />
                     
-                    {/* Glowing animated scanner line */}
-                    <div className="absolute left-6 right-6 top-1/2 h-[2px] bg-cta/40 shadow-[0_0_8px_#EA3D8F] animate-pulse pointer-events-none z-10" />
 
                     <QRCodeSVG
                       value={qrValue || (ticket ? ticket.qr_payload : '')}
