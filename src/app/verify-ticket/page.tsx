@@ -50,6 +50,34 @@ function TicketVerifier() {
     }
   }, [ticket?.expires_at])
 
+  const [countdown, setCountdown] = useState<string>('00:00')
+  useEffect(() => {
+    if (!ticket) return
+
+    const formatCountdown = (ms: number): string => {
+      if (ms <= 0) return '00:00'
+      const totalSeconds = Math.floor(ms / 1000)
+      const minutes = Math.floor(totalSeconds / 60)
+      const seconds = totalSeconds % 60
+      return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+    }
+
+    const initialRemaining = new Date(ticket.expires_at).getTime() - Date.now()
+    setCountdown(formatCountdown(initialRemaining))
+
+    const interval = setInterval(() => {
+      const remaining = new Date(ticket.expires_at).getTime() - Date.now()
+      if (remaining <= 0) {
+        setCountdown('00:00')
+        clearInterval(interval)
+      } else {
+        setCountdown(formatCountdown(remaining))
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [ticket])
+
   useEffect(() => {
     if (!payload) {
       setStatus('invalid')
@@ -269,6 +297,13 @@ function TicketVerifier() {
                             {String(ticket.id).slice(-8).toUpperCase()}
                           </span>
                         </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">
+                        <span className="text-neutral-muted flex items-center gap-1.5"><Clock size={13} /> Temps restant</span>
+                        <span className="font-bold text-brand-dark font-mono text-[14px]">
+                          {countdown}
+                        </span>
                       </div>
 
                       <div className="flex items-center justify-between p-3 bg-surface-section border border-neutral-border rounded-[3px] text-[12px]">
