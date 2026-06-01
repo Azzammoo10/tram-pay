@@ -188,6 +188,16 @@ export default function DashboardPage() {
     return () => clearInterval(rotateInterval)
   }, [ticket?.id, state])
 
+  // Generate verification URL safely on the client to avoid hydration mismatch
+  const [qrValue, setQrValue] = useState<string>('')
+  useEffect(() => {
+    if (ticket?.qr_payload) {
+      setQrValue(`${window.location.origin}/verify-ticket?payload=${encodeURIComponent(ticket.qr_payload)}`)
+    } else {
+      setQrValue('')
+    }
+  }, [ticket?.qr_payload])
+
   return (
     <div className="max-w-3xl mx-auto py-8 px-4">
       <header className="flex flex-col mb-[32px] text-left">
@@ -337,7 +347,7 @@ export default function DashboardPage() {
                     <div className="absolute left-6 right-6 top-1/2 h-[2px] bg-cta/40 shadow-[0_0_8px_#EA3D8F] animate-pulse pointer-events-none z-10" />
 
                     <QRCodeSVG
-                      value={typeof window !== 'undefined' ? `${window.location.origin}/verify-ticket?payload=${encodeURIComponent(ticket.qr_payload)}` : ticket.qr_payload}
+                      value={qrValue || (ticket ? ticket.qr_payload : '')}
                       size={180}
                       level="H"
                       includeMargin={false}
@@ -410,7 +420,7 @@ export default function DashboardPage() {
                     className="relative p-6 bg-white border border-neutral-border rounded-[3px] shadow-sm select-none"
                   >
                     <QRCodeSVG
-                      value={typeof window !== 'undefined' ? `${window.location.origin}/verify-ticket?payload=${encodeURIComponent(ticket.qr_payload)}` : ticket.qr_payload}
+                      value={qrValue || (ticket ? ticket.qr_payload : '')}
                       size={150}
                       level="M"
                       includeMargin={false}
