@@ -22,15 +22,14 @@ function formatCountdown(ms: number): string {
 }
 
 function getTramName(ticketId: number | string | undefined): string {
-  if (!ticketId) return 'Alstom Citadis N° 101'
+  if (!ticketId) return 'Val-PN532-1'
   const idStr = String(ticketId)
   let hash = 0
   for (let i = 0; i < idStr.length; i++) {
     hash = idStr.charCodeAt(i) + ((hash << 5) - hash)
   }
-  const tams = [103, 105, 108, 112, 115, 119, 124, 127, 129, 132, 138, 142, 144]
-  const index = Math.abs(hash) % tams.length
-  return `Alstom Citadis N° ${tams[index]}`
+  const index = (Math.abs(hash) % 30) + 1
+  return `Val-PN532-${index}`
 }
 
 export default function DashboardPage() {
